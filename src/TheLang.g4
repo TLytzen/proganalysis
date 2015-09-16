@@ -12,53 +12,49 @@ grammar TheLang;
 
 options {
   language= Java;  /* Change this to generate parser for some other language. */
-  backtrack = true;
-  memoize = true;
-  output = AST;
-  ASTLabelType = CommonTree;
 }
 
-tokens {
-  AND = '&';
-  OR = '|';
-  ASSIGN = ':=';
-  SEMI = ';';
-  GT = '>';
-  GE = '>=';
-  LT = '<';
-  LE = '<=';
-  EQ = '=';
-  NEQ = '!=';
-  PLUS = '+';
-  MINUS = '-';
-  MUL = '*';
-  DIV = '/';
-  NOT = '!';
-  LPAREN = '(';
-  RPAREN = ')';
-  LBRACE = '{';
-  RBRACE = '}';
-  LBRACKET = '[';
-  RBRACKET = ']';
-  COLON = ':';
-  IF = 'if';
-  THEN = 'then';
-  ELSE = 'else';
-  FI = 'fi';
-  WHILE = 'while';
-  DO = 'do';
-  OD = 'od';
-  SKIP = 'skip';
-  WRITE = 'write';
-  READ = 'read';
-  PROGRAM = 'program';
-  END = 'end';
-  TRUE = 'true';
-  FALSE = 'false';
-  INT = 'int';
-  LOW = 'low';
-  HIGH = 'high';
-}
+
+  AND: '&';
+  OR: '|';
+  ASSIGN: ':=';
+  SEMI: ';';
+  GT: '>';
+  GE: '>=';
+  LT: '<';
+  LE: '<=';
+  EQ: '=';
+  NEQ: '!=';
+  PLUS: '+';
+  MINUS: '-';
+  MUL: '*';
+  DIV: '/';
+  NOT: '!';
+  LPAREN: '(';
+  RPAREN: ')';
+  LBRACE: '{';
+  RBRACE: '}';
+  LBRACKET: '[';
+  RBRACKET: ']';
+  COLON: ':';
+  IF: 'if';
+  THEN: 'then';
+  ELSE: 'else';
+  FI: 'fi';
+  WHILE: 'while';
+  DO: 'do';
+  OD: 'od';
+  SKIP: 'skip';
+  WRITE: 'write';
+  READ: 'read';
+  PROGRAM: 'program';
+  END: 'end';
+  TRUE: 'true';
+  FALSE: 'false';
+  INT: 'int';
+  LOW: 'low';
+  HIGH: 'high';
+
 
 aexpr : aexpr1 (PLUS aexpr1 | MINUS aexpr1)* ;
 
@@ -121,8 +117,7 @@ whileStmt : WHILE bexpr DO stmt+ OD ;
 program : PROGRAM decl* stmt+ END ;
 
 
-COMMENT : '(*' (options {greedy=false;} : .)* '*)' {$channel=HIDDEN;}
-     ;
+COMMENT : '(*' .*? '*)' -> skip;
 
 INTEGER : ('0' | '1'..'9' '0'..'9'*);
 
