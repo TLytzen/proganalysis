@@ -1,12 +1,14 @@
-package ast.nodes;
+package ast.nodes.arithmeticExpressions;
 
 
-public class UnaryOperatorExpression extends ArithmeticExpression {
+import ast.nodes.ArithmeticExpression;
+
+public class ArithmeticUnaryOperatorExpression extends ArithmeticExpression {
 
     private String operator;
     private ArithmeticExpression expression;
 
-    public UnaryOperatorExpression(String operator, ArithmeticExpression expression)
+    public ArithmeticUnaryOperatorExpression(String operator, ArithmeticExpression expression)
     {
         this.operator = operator;
         this.expression = expression;

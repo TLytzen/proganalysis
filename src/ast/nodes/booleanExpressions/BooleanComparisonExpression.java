@@ -1,16 +1,16 @@
-package ast.nodes;
+package ast.nodes.booleanExpressions;
+
+import ast.nodes.ArithmeticExpression;
+import ast.nodes.BooleanExpression;
 
 
-import ast.Node;
-import sun.org.mozilla.javascript.internal.ast.AstNode;
-
-public class OperatorExpression extends ArithmeticExpression {
+public class BooleanComparisonExpression extends BooleanExpression {
 
     private ArithmeticExpression left;
     private String operator;
     private ArithmeticExpression right;
 
-    public OperatorExpression(ArithmeticExpression left, String operator, ArithmeticExpression right) {
+    public BooleanComparisonExpression(ArithmeticExpression left, String operator, ArithmeticExpression right) {
         this.left = left;
         this.operator = operator;
         this.right = right;

@@ -1,9 +1,11 @@
-package ast.nodes;
+package ast.nodes.arithmeticExpressions;
+
+import ast.nodes.ArithmeticExpression;
 
 /**
  * Created by rasmu_000 on 2015-10-04.
  */
-public class IntExpression extends  ArithmeticExpression {
+public class IntExpression extends ArithmeticExpression {
 
     private String identifier;
 

@@ -1,6 +1,8 @@
-package ast.nodes;
+package ast.nodes.arithmeticExpressions;
 
-public class ArrayExpression extends  ArithmeticExpression{
+import ast.nodes.ArithmeticExpression;
+
+public class ArrayExpression extends ArithmeticExpression {
 
     private String identifier;
     private ArithmeticExpression index;
