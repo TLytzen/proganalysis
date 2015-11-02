@@ -9,8 +9,6 @@ import ast.nodes.booleanExpressions.BooleanComparisonExpression;
 import ast.nodes.booleanExpressions.BooleanConstantExpression;
 import ast.nodes.booleanExpressions.BooleanOperatorExpression;
 import ast.nodes.booleanExpressions.BooleanUnaryOperatorExpression;
-import org.antlr.runtime.tree.ParseTree;
-
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,28 +3,59 @@ package ast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a node in a syntax tree structure
  */
 public abstract class Node {
 
-	/**
-	 * The children of this ASTNode 
-	 */
-	private ArrayList<Node> children = new ArrayList<>();
-	
-	/**
-	 * Gets a list of all child nodes for this AST Node
-	 * 
-	 * @return the child list as an unmodifiable list
-	 */
-	public final List<Node> getChildren(){
-		return Collections.unmodifiableList(this.children);
-	}
-	
-	
-	/**
+
+
+    public abstract Integer initialNode();
+
+    public abstract Set<Integer> finalNodes();
+
+    public abstract List<int[]> flow();
+
+    public abstract Set<Node> blocks();
+
+    private int label;
+
+    public void setLabel(int label)
+    {
+        this.label = label;
+    }
+
+    public int getLabel(){
+        return this.label;
+    }
+
+    protected static List<int[]> flowForStatementList(List<Node> statements)
+    {
+        List<int[]> flow = new ArrayList<>();
+
+        for (int s2 = 1; s2 < statements.size(); s2++){
+            int s1 = s2 - 1;
+            for (int l : statements.get(s1).finalNodes())
+            {
+                flow.add(new int[]{ l, statements.get(s2).initialNode()});
+            }
+        }
+
+        for (int a = 0; a < statements.size(); a++) {
+            flow.addAll(statements.get(a).flow());
+        }
+
+        return flow;
+    }
+
+    /**
+     * The children of this ASTNode
+     */
+    protected ArrayList<Node> children = new ArrayList<>();
+
+    /**
 	 * Adds the given node to the child list if it is not null.
 	 * 
 	 * @param node the node to add
@@ -42,49 +73,5 @@ public abstract class Node {
 	 */
 	protected void addChildNodes(List<Node> nodes){
 		this.children.addAll(nodes);
-	}
-	
-	/**
-	 * Gets a string representation for the node with the given child objects
-	 * 
-	 * @param nodeName the name of the current node
-	 * @param nodeArguments the list of arguments (may be nodes also)
-	 * @return a string representation of the node with arguments 
-	 */
-	public static String stringOfList(String nodeName, List<?> nodeArguments){
-		StringBuilder sb = new StringBuilder();
-		sb.append(nodeName);
-		sb.append('(');
-		
-		boolean first = true;
-		for(Object node : nodeArguments){
-			if(!first){
-				sb.append(',');
-			}
-			sb.append(node);
-			first = false;
-		}
-		
-		sb.append(')');
-		return sb.toString();
-	}
-	
-	public static String concatenateListItems(List<?> nodeArguments){
-		return concatenateListItems(nodeArguments, '\n');
-	}
-	
-	public static String concatenateListItems(List<?> nodeArguments, char separator){
-		StringBuilder sb = new StringBuilder();
-		
-		boolean first = true;
-		for(Object node : nodeArguments){
-			if(!first){
-				sb.append(separator);
-			}
-			sb.append(node);
-			first = false;
-		}
-		
-		return sb.toString();
 	}
 }

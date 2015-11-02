@@ -3,8 +3,7 @@ package ast.nodes;
 import ast.Node;
 import ast.nodes.BooleanExpression;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IfStatement extends Node {
 
@@ -33,5 +32,59 @@ public class IfStatement extends Node {
 
     public List<Node> getElseNodes() {
         return elseNodes;
+    }
+
+
+    @Override
+    public Integer initialNode() {
+        return this.getLabel();
+    }
+
+    @Override
+    public Set<Integer> finalNodes() {
+        HashSet<Integer> finalNodes = new HashSet<>();
+
+        if (this.ifNodes.size() > 0)
+        {
+            finalNodes.addAll(this.ifNodes.get(this.ifNodes.size() - 1).finalNodes());
+        }
+
+        if (this.elseNodes.size() > 0)
+        {
+            finalNodes.addAll(this.elseNodes.get(this.elseNodes.size() - 1).finalNodes());
+        }
+
+        return finalNodes;
+    }
+
+    @Override
+    public List<int[]> flow() {
+        List<int[]> flow = new ArrayList<>();
+
+        if (this.ifNodes.size() > 0) {
+            flow.add(new int[]{this.condition.getLabel(), this.ifNodes.get(0).getLabel()});
+        }
+
+        if (this.elseNodes.size() > 0) {
+            flow.add(new int[]{this.condition.getLabel(), this.elseNodes.get(0).getLabel()});
+        }
+
+        flow.addAll(Node.flowForStatementList(this.ifNodes));
+        flow.addAll(Node.flowForStatementList(this.elseNodes));
+
+
+        return flow;
+    }
+
+    @Override
+    public Set<Node> blocks() {
+        HashSet<Node> nodes = new HashSet<>();
+
+        for (int a = 0; a < this.children.size(); a++)
+        {
+            nodes.addAll(this.children.get(a).blocks());
+        }
+
+        return nodes;
     }
 }

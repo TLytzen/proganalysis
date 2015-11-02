@@ -1,36 +1,57 @@
 package graph;
 
 import ast.Node;
+import ast.nodes.RootNode;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FlowGraph {
 
     private List<Node> nodes;
-    private HashSet<Edge> edges;
+    private Set<Edge> edges;
 
-    private HashSet<Node> finalSet;
-    private Node initialNode;
+    private Set<Integer> finalSet;
+    private int initialNode;
 
-    public FlowGraph()
+    private FlowGraph()
     {
         this.nodes = new ArrayList<>();
         this.edges = new HashSet<>();
     }
 
-    public int addNode(Node node)
-    {
-        this.nodes.add(node);
-        return this.nodes.size();
+    public static FlowGraph constructGraph(Node node){
+        FlowGraph graph = new FlowGraph();
+
+        for (Node n : node.blocks())
+        {
+            int label = graph.addNode(n);
+            n.setLabel(label);
+        }
+
+        for (int[] edgeInfo : node.flow())
+        {
+            graph.addEdge(edgeInfo[0], edgeInfo[1]);
+        }
+
+        graph.initialNode = node.initialNode();
+        graph.finalSet = node.finalNodes();
+
+        return graph;
     }
 
-    public void addEdge(int from, int to)
+    private int addNode(Node node)
+    {
+        this.nodes.add(node);
+        return this.nodes.size() - 1;
+    }
+
+    private void addEdge(int from, int to)
     {
         this.edges.add(new Edge(from, to));
     }
-
 
     public class Edge
     {
@@ -71,4 +92,6 @@ public class FlowGraph {
             return "("+this.from+","+this.to+")";
         }
     }
+
+
 }

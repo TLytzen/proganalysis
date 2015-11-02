@@ -4,6 +4,7 @@ import antlr.TheLangLexer;
 import antlr.TheLangParser;
 import ast.AstBuilder;
 import ast.Node;
+import graph.FlowGraph;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
@@ -20,6 +21,7 @@ public class Main {
         Node rootNode = readProgram(args[0]);
 
         // Construct Flow Graph
+        FlowGraph graph = FlowGraph.constructGraph(rootNode);
     }
 
     private static Node readProgram(String arg) throws IOException {
