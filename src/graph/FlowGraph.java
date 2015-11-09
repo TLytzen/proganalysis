@@ -3,15 +3,12 @@ package graph;
 import ast.Node;
 import ast.nodes.RootNode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FlowGraph {
 
     private List<Node> nodes;
-    private Set<Edge> edges;
+    private List<List<Integer>> edges;
 
     private Set<Integer> finalSet;
     private int initialNode;
@@ -19,8 +16,21 @@ public class FlowGraph {
     private FlowGraph()
     {
         this.nodes = new ArrayList<>();
-        this.edges = new HashSet<>();
+        this.edges = new ArrayList<>();
     }
+
+    public int size(){
+        return this.nodes.size();
+    }
+
+    public Node getVertice(int v){
+        return this.nodes.get(v);
+    }
+
+    public int getInitialNode(){
+        return this.initialNode;
+    }
+
 
     public static FlowGraph constructGraph(Node node){
         FlowGraph graph = new FlowGraph();
@@ -45,14 +55,19 @@ public class FlowGraph {
     private int addNode(Node node)
     {
         this.nodes.add(node);
+        this.edges.add(new ArrayList<Integer>());
         return this.nodes.size() - 1;
     }
 
     private void addEdge(int from, int to)
     {
-        this.edges.add(new Edge(from, to));
+        this.edges.get(from).add(to);
     }
 
+    public List<Integer> getEdges(int vertice) {
+        return Collections.unmodifiableList(this.edges.get(vertice));
+    }
+/*
     public class Edge
     {
         private int from, to;
@@ -91,7 +106,7 @@ public class FlowGraph {
         public String toString() {
             return "("+this.from+","+this.to+")";
         }
-    }
+    }*/
 
 
 }

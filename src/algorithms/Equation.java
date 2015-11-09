@@ -1,9 +1,9 @@
 package algorithms;
 
 
-public interface Equation {
+public interface Equation<T extends CompleteLattice> {
 
-    CompleteLattice evaluate(CompleteLattice lattice);
+    T evaluate(T lattice);
 
     int getIndex();
 }

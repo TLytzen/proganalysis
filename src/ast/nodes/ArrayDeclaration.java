@@ -40,7 +40,9 @@ public class ArrayDeclaration extends Node {
 
     @Override
     public Set<Node> blocks() {
-        return Collections.singleton((Node)this);
+        return Collections.singleton((Node) this);
     }
+
+
 
 }

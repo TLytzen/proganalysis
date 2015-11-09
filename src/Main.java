@@ -1,5 +1,6 @@
 
 
+import algorithms.reachingDefinitions.RDAnalysis;
 import antlr.TheLangLexer;
 import antlr.TheLangParser;
 import ast.AstBuilder;
@@ -22,6 +23,9 @@ public class Main {
 
         // Construct Flow Graph
         FlowGraph graph = FlowGraph.constructGraph(rootNode);
+
+
+        RDAnalysis rdAnalysis = new RDAnalysis(graph);
     }
 
     private static Node readProgram(String arg) throws IOException {

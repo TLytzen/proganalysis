@@ -1,9 +1,9 @@
 package algorithms;
 
 
-public interface CompleteLattice {
+public interface CompleteLattice<T extends CompleteLattice>  {
 
-    boolean leq(CompleteLattice lattice);
+    boolean leq(T lattice);
 
-    CompleteLattice join(CompleteLattice lattice);
+    T join(T lattice);
 }
