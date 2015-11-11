@@ -8,6 +8,7 @@ import ast.AstBuilder;
 import ast.Node;
 import graph.FlowGraph;
 import org.antlr.v4.runtime.*;
+import print.Print;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,6 +26,10 @@ public class Main {
 
         // Run the reaching definitions analysis
         CompleteLattice[] rdAnalysis = RDAnalysis.analyse(graph);
+
+        // Print the result
+        Print print = new Print();
+        print.printGraph(graph, rdAnalysis);
     }
 
     private static Node readProgram(String arg) throws IOException {
