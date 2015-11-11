@@ -1,6 +1,7 @@
 package ast.nodes;
 
 import ast.Node;
+import ast.Visitor;
 import ast.nodes.BooleanExpression;
 
 import java.util.*;
@@ -77,8 +78,8 @@ public class IfStatement extends Node {
     }
 
     @Override
-    public Set<Node> blocks() {
-        HashSet<Node> nodes = new HashSet<>();
+    public List<Node> blocks() {
+        ArrayList<Node> nodes = new ArrayList<>();
 
         for (int a = 0; a < this.children.size(); a++)
         {
@@ -86,5 +87,10 @@ public class IfStatement extends Node {
         }
 
         return nodes;
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitIfStatement(this, data);
     }
 }

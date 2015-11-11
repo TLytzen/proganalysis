@@ -10,6 +10,28 @@ import java.util.Set;
  */
 public abstract class Node {
 
+    /**
+     * The children of this ASTNode
+     */
+    protected ArrayList<Node> children = new ArrayList<>();
+
+    /**
+     * Accepts the visitor and calls the correct "visitNode" function on the visitor
+     *
+     * @param visitor the visitor to be called
+     * @see Visitor
+     */
+    public abstract <T,S> T accept(Visitor<T,S> visitor, S data);
+
+
+    /**
+     * Gets a list of all child nodes for this Node
+     *
+     * @return the child list as an unmodifiable list
+     */
+    public final List<Node> getChildren(){
+        return Collections.unmodifiableList(this.children);
+    }
 
 
     public abstract Integer initialNode();
@@ -18,7 +40,7 @@ public abstract class Node {
 
     public abstract List<int[]> flow();
 
-    public abstract Set<Node> blocks();
+    public abstract List<Node> blocks();
 
     private int label;
 
@@ -50,10 +72,6 @@ public abstract class Node {
         return flow;
     }
 
-    /**
-     * The children of this ASTNode
-     */
-    protected ArrayList<Node> children = new ArrayList<>();
 
     /**
 	 * Adds the given node to the child list if it is not null.

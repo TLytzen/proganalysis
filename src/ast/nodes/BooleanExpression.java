@@ -1,6 +1,7 @@
 package ast.nodes;
 
 import ast.Node;
+import ast.Visitor;
 
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,12 @@ public abstract class BooleanExpression extends Node{
     }
 
     @Override
-    public Set<Node> blocks() {
+    public List<Node> blocks() {
         return null;
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitBooleanExpression(this, data);
     }
 }

@@ -1,6 +1,7 @@
 package ast.nodes;
 
 import ast.Node;
+import ast.Visitor;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +12,9 @@ public class ArrayDeclaration extends Node {
     private int length;
 
     public ArrayDeclaration(String identifier, int length) {
+
         this.identifier = identifier;
+        this.length = length;
     }
 
     public String getIdentifier() {
@@ -39,10 +42,13 @@ public class ArrayDeclaration extends Node {
     }
 
     @Override
-    public Set<Node> blocks() {
-        return Collections.singleton((Node) this);
+    public List<Node> blocks() {
+        return Collections.singletonList((Node) this);
     }
 
-
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitArrayDeclaration(this, data);
+    }
 
 }

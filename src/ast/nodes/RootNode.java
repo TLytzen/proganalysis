@@ -1,6 +1,7 @@
 package ast.nodes;
 
 import ast.Node;
+import ast.Visitor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,12 +39,17 @@ public class RootNode extends Node {
     }
 
     @Override
-    public Set<Node> blocks() {
-        Set<Node> blocks = new HashSet<>();
+    public List<Node> blocks() {
+        ArrayList<Node> blocks = new ArrayList<>();
         for (int a = 0; a < this.children.size(); a++) {
             blocks.addAll(this.children.get(a).blocks());
         }
 
         return blocks;
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitRootNode(this, data);
     }
 }

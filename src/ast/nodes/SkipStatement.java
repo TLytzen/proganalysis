@@ -1,6 +1,7 @@
 package ast.nodes;
 
 import ast.Node;
+import ast.Visitor;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,7 +25,12 @@ public class SkipStatement extends Node {
     }
 
     @Override
-    public Set<Node> blocks() {
-        return Collections.singleton((Node)this);
+    public List<Node> blocks() {
+        return Collections.singletonList((Node) this);
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitSkipStatement(this, data);
     }
 }

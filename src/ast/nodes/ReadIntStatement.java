@@ -2,6 +2,7 @@ package ast.nodes;
 
 
 import ast.Node;
+import ast.Visitor;
 import ast.nodes.arithmeticExpressions.ArrayExpression;
 import ast.nodes.arithmeticExpressions.IntExpression;
 
@@ -19,8 +20,8 @@ public class ReadIntStatement extends Node{
     }
 
 
-    public IntExpression getIntExpression() {
-        return intExpression;
+    public String getIdentifier() {
+        return intExpression.getIdentifier();
     }
 
 
@@ -40,7 +41,14 @@ public class ReadIntStatement extends Node{
     }
 
     @Override
-    public Set<Node> blocks() {
-        return Collections.singleton((Node)this);
+    public List<Node> blocks() {
+        return Collections.singletonList((Node) this);
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitReadIntStatement(this, data);
     }
 }
+
+

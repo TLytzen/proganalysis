@@ -1,6 +1,5 @@
 package algorithms.reachingDefinitions;
 
-
 import algorithms.Equation;
 import ast.Node;
 import ast.nodes.ArrayAssignment;
@@ -16,9 +15,6 @@ public class RDAnalysis {
 
     private HashMap<String, Integer> variables;
 
-    public static final long QuestionMarkSet = 1;
-
-    public static final long KillVariableSet = Long.MAX_VALUE;
 
     public RDAnalysis(FlowGraph graph)
     {
@@ -47,18 +43,22 @@ public class RDAnalysis {
             }
         }
 
-        HashSet<Equation> equations = new HashSet<>();
+        List<Equation> equations = new ArrayList<>();
 
         // Create the constraints for the initial values
         for (int variable = 0; variable < variableCount; variable++){
-            equations.add(new BitVectorFrameworkConstraint(graph.getInitialNode(), null, new BitVectorSet(variable, QuestionMarkSet), null));
+            equations.add(new BitVectorFrameworkConstraint(graph.getInitialNode(), null, new BitVectorSet(variable, BitVectorSet.QuestionMarkSet), null));
         }
+
+        RDGenSetVisitor genSetVisitor = new RDGenSetVisitor();
+        RDKillSetVisitor killSetVisitor = new RDKillSetVisitor();
 
         // Create the rest of the constraints
         for (int vertice = 0; vertice < graph.size(); vertice++){
 
-            List<BitVectorSet> genSets = this.getGenSet(graph.getVertice(vertice));
-            List<BitVectorSet> killSets = this.getKillSet(graph.getVertice(vertice));
+            Node node = graph.getVertice(vertice);
+            List<BitVectorSet> genSets = genSetVisitor.visitNode(node, this.variables);
+            List<BitVectorSet> killSets = killSetVisitor.visitNode(node, this.variables);
 
             for (int destination : graph.getEdges(vertice)){
                 // Add one equation for each of the elements in killSets
@@ -84,110 +84,8 @@ public class RDAnalysis {
     // ADD the equations to the worklist algorithm
     }
 
-    /// THIS should be implemented using a Visitor pattern instead of this instanceof business
-    private List<BitVectorSet> getKillSet(Node vertice) {
-
-        if (vertice instanceof IntDeclaration){
-            IntDeclaration intDeclarationNode = (IntDeclaration)vertice;
-            return Collections.singletonList(new BitVectorSet(this.variables.get(intDeclarationNode.getIdentifier()), KillVariableSet));
-        }
-
-        if (vertice instanceof ArrayDeclaration){
-            ArrayDeclaration arrayDeclarationNode = (ArrayDeclaration)vertice;
-            List<BitVectorSet> arrayGenerations = new ArrayList<>();
-
-            for (int n = 0; n < arrayDeclarationNode.getLength(); n++){
-                arrayGenerations.add(new BitVectorSet(this.variables.get(getArrayElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), KillVariableSet));
-            }
-
-            return arrayGenerations;
-        }
-
-        if (vertice instanceof IntAssignment){
-            IntAssignment intAssignmentNode = (IntAssignment)vertice;
-            // x := ... where x is a int
-            return Collections.singletonList(new BitVectorSet(this.variables.get(intAssignmentNode.getIdentifier()), KillVariableSet));
-        }
-
-        if (vertice instanceof ArrayAssignment) {
-            ArrayAssignment arrayAssignmentNode = (ArrayAssignment)vertice;
-            if(arrayAssignmentNode.getIndex() instanceof ArithmeticConstantExpression)
-            {
-                // The case where A[n] := ....
-                String index = getArrayElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression)arrayAssignmentNode.getIndex()).getValue());
-                if (this.variables.containsKey(index)){
-                    return Collections.singletonList(new BitVectorSet(this.variables.get(index), KillVariableSet));
-                }
-            }
-        }
-
-
-        // Read statements are missing
-        return null;
-    }
-
-    private List<BitVectorSet> getGenSet(Node vertice) {
-
-
-
-        if (vertice instanceof IntDeclaration){
-            IntDeclaration intDeclarationNode = (IntDeclaration)vertice;
-            return Collections.singletonList(new BitVectorSet(this.variables.get(intDeclarationNode.getIdentifier()), getSetForLabel(intDeclarationNode.getLabel())));
-        }
-
-        if (vertice instanceof ArrayDeclaration){
-            ArrayDeclaration arrayDeclarationNode = (ArrayDeclaration)vertice;
-            List<BitVectorSet> arrayGenerations = new ArrayList<>();
-
-            for (int n = 0; n < arrayDeclarationNode.getLength(); n++){
-                arrayGenerations.add(new BitVectorSet(this.variables.get(getArrayElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), getSetForLabel(arrayDeclarationNode.getLabel())));
-            }
-
-            return arrayGenerations;
-        }
-
-        if (vertice instanceof IntAssignment){
-            IntAssignment intAssignmentNode = (IntAssignment)vertice;
-            // x := ... where x is a int
-            return Collections.singletonList(new BitVectorSet(this.variables.get(intAssignmentNode.getIdentifier()), getSetForLabel(intAssignmentNode.getLabel())));
-        }
-
-        if (vertice instanceof ArrayAssignment) {
-            ArrayAssignment arrayAssignmentNode = (ArrayAssignment)vertice;
-            if(arrayAssignmentNode.getIndex() instanceof ArithmeticConstantExpression)
-            {
-                // The case where A[n] := ....
-                String index = getArrayElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression)arrayAssignmentNode.getIndex()).getValue());
-                if (this.variables.containsKey(index)){
-                    return Collections.singletonList(new BitVectorSet(this.variables.get(index), getSetForLabel(arrayAssignmentNode.getLabel())));
-                }
-            }
-            else{
-                // The case where A[a_1] := where a_1 is not a constant expression
-                List<BitVectorSet> arrayGenerations = new ArrayList<>();
-                for (int n = 0; n < this.variables.size(); n++){
-                    String index = getArrayElementIdentifier(arrayAssignmentNode.getIdentifier(), n);
-                    if (!this.variables.containsKey(index)){
-                        break;
-                    }
-
-                    arrayGenerations.add(new BitVectorSet(this.variables.get(index), getSetForLabel(arrayAssignmentNode.getLabel())));
-                }
-
-                return arrayGenerations;
-            }
-        }
-
-        // Read statements are missing
-
-        return null;
-    }
-
-    private long getSetForLabel(int labelNum){
-        return 1 << (1 + labelNum);
-    }
-
-    private  String getArrayElementIdentifier(String arrayIdentifier, int element){
+    public static String getArrayElementIdentifier(String arrayIdentifier, int element){
         return arrayIdentifier+"["+element+"]";
     }
+
 }

@@ -1,6 +1,7 @@
 package ast.nodes;
 
 import ast.Node;
+import ast.Visitor;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.*;
@@ -52,8 +53,8 @@ public class WhileStatement extends Node {
     }
 
     @Override
-    public Set<Node> blocks() {
-        Set<Node> blocks = new HashSet<>();
+    public List<Node> blocks() {
+        ArrayList<Node> blocks = new ArrayList<>();
         blocks.add(this.condition);
         for (int a = 0; a < this.nodes.size(); a++) {
             blocks.addAll(this.nodes.get(a).blocks());
@@ -62,4 +63,9 @@ public class WhileStatement extends Node {
         return blocks;
     }
 
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitWhileStatement(this, data);
+    }
 }
