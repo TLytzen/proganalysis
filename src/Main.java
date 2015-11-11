@@ -1,5 +1,6 @@
 
 
+import algorithms.CompleteLattice;
 import algorithms.reachingDefinitions.RDAnalysis;
 import antlr.TheLangLexer;
 import antlr.TheLangParser;
@@ -23,7 +24,7 @@ public class Main {
         FlowGraph graph = FlowGraph.constructGraph(rootNode);
 
         // Run the reaching definitions analysis
-        RDAnalysis rdAnalysis = new RDAnalysis(graph);
+        CompleteLattice[] rdAnalysis = RDAnalysis.analyse(graph);
     }
 
     private static Node readProgram(String arg) throws IOException {
