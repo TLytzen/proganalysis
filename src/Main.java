@@ -7,9 +7,7 @@ import ast.AstBuilder;
 import ast.Node;
 import graph.FlowGraph;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +22,7 @@ public class Main {
         // Construct Flow Graph
         FlowGraph graph = FlowGraph.constructGraph(rootNode);
 
-
+        // Run the reaching definitions analysis
         RDAnalysis rdAnalysis = new RDAnalysis(graph);
     }
 
