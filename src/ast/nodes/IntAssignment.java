@@ -56,6 +56,6 @@ public class IntAssignment extends Node {
 
     @Override
     public String toString(){
-        return this.identifier+" "+this.value;
+        return this.identifier+":="+this.value;
     }
 }

@@ -25,6 +25,6 @@ public class ArrayExpression extends ArithmeticExpression {
 
     @Override
     public String toString(){
-        return this.identifier+this.index;
+        return this.identifier+"["+this.index+"]";
     }
 }

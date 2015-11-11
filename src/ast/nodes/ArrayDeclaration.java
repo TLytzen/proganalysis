@@ -53,7 +53,7 @@ public class ArrayDeclaration extends Node {
 
     @Override
     public String toString(){
-        return this.identifier+"["+this.length+"]";
+        return "Int "+this.identifier+"["+this.length+"]";
     }
 
 }

@@ -24,6 +24,6 @@ public class BooleanUnaryOperatorExpression extends BooleanExpression {
 
     @Override
     public String toString(){
-        return this.operator+this.expression;
+        return this.operator+this.expression.toString();
     }
 }

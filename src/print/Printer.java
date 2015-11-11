@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Thomas on 11-11-2015.
  */
-public class Print {
+public class Printer {
 
     public void printGraph(FlowGraph flowgraph, CompleteLattice[] analysisResult){
             PrettyPrinter prettyprint = new PrettyPrinter(analysisResult);
@@ -78,8 +78,8 @@ public class Print {
             return "[" + skipStatement.toString()+"]"+"^"+skipStatement.getLabel()+" : "+ data.toString();
         }
         @Override
-        public String visitWhileStatement(WhileStatement whileStatement, CompleteLattice data){
-            return "["+whileStatement.toString()+"]"+"^"+whileStatement.getLabel()+" : "+ data.toString();
+        public String visitBooleanExpression(BooleanExpression booleanExpression, CompleteLattice data){
+            return "["+booleanExpression.toString()+"]"+"^"+booleanExpression.getLabel()+" : "+ data.toString();
         }
 
         @Override

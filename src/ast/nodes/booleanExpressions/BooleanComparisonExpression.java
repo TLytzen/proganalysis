@@ -33,6 +33,6 @@ public class BooleanComparisonExpression extends BooleanExpression {
 
     @Override
     public String toString(){
-        return this.left+this.operator+this.right;
+        return this.left.toString()+this.operator+this.right.toString();
     }
 }

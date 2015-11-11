@@ -69,8 +69,5 @@ public class WhileStatement extends Node {
         return visitor.visitWhileStatement(this, data);
     }
 
-    @Override
-    public String toString(){
-        return condition;
-    }
+
 }
