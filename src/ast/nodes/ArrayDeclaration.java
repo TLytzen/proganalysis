@@ -51,4 +51,9 @@ public class ArrayDeclaration extends Node {
         return visitor.visitArrayDeclaration(this, data);
     }
 
+    @Override
+    public String toString(){
+        return this.identifier+"["+this.length+"]";
+    }
+
 }

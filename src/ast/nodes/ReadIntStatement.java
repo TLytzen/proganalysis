@@ -49,6 +49,11 @@ public class ReadIntStatement extends Node{
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitReadIntStatement(this, data);
     }
+
+    @Override
+    public String toString(){
+        return "read "+this.intExpression.toString();
+    }
 }
 
 

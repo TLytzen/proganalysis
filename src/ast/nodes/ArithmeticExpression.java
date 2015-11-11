@@ -32,4 +32,6 @@ public abstract class ArithmeticExpression extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitArtihmeticExpression(this, data);
     }
+
+
 }

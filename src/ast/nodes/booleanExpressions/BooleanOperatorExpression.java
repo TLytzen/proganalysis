@@ -28,4 +28,9 @@ public class BooleanOperatorExpression extends BooleanExpression {
     public BooleanExpression getRight() {
         return right;
     }
+
+    @Override
+    public String toString(){
+        return this.left+this.operator+this.right;
+    }
 }

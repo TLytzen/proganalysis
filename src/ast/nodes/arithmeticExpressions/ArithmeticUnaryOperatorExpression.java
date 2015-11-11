@@ -23,4 +23,10 @@ public class ArithmeticUnaryOperatorExpression extends ArithmeticExpression {
     public ArithmeticExpression getExpression() {
         return expression;
     }
+
+    @Override
+    public String toString(){
+        return this.operator + this.expression;
+    }
+
 }

@@ -68,4 +68,9 @@ public class WhileStatement extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitWhileStatement(this, data);
     }
+
+    @Override
+    public String toString(){
+        return "while " + condition + " do";
+    }
 }

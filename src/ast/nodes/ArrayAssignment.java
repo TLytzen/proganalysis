@@ -63,5 +63,11 @@ public class ArrayAssignment extends Node {
         return visitor.visitArrayAssignment(this, data);
     }
 
+    @Override
+    public String toString(){
+        return this.identifier +"["+this.index+"]" +":=" +this.value;
+    }
+
 }
+
 

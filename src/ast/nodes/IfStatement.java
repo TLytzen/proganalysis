@@ -93,4 +93,9 @@ public class IfStatement extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitIfStatement(this, data);
     }
+
+    @Override
+    public String toString(){
+        return "if" + this.condition;
+    }
 }

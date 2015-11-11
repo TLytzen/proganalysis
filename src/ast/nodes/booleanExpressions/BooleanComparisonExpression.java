@@ -30,4 +30,9 @@ public class BooleanComparisonExpression extends BooleanExpression {
     public ArithmeticExpression getRight() {
         return right;
     }
+
+    @Override
+    public String toString(){
+        return this.left+this.operator+this.right;
+    }
 }

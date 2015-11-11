@@ -15,4 +15,6 @@ public class ArithmeticConstantExpression extends ArithmeticExpression {
     public int getValue() {
         return value;
     }
+
+
 }

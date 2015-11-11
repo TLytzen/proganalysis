@@ -33,4 +33,9 @@ public class SkipStatement extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitSkipStatement(this, data);
     }
+
+    @Override
+    public String toString(){
+        return "skip";
+    }
 }

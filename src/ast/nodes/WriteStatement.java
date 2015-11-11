@@ -44,4 +44,9 @@ public class WriteStatement extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitWriteStatement(this, data);
     }
+
+    @Override
+    public String toString(){
+        return "Write "+ this.arithmeticExpression.toString();
+    }
 }

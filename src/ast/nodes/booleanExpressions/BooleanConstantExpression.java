@@ -15,4 +15,9 @@ public class BooleanConstantExpression extends BooleanExpression {
     {
         return this.value;
     }
+
+    @Override
+    public String toString(){
+        return value ? "true":"false";
+    }
 }

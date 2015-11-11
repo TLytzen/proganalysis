@@ -53,4 +53,9 @@ public class IntAssignment extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitIntAssignment(this, data);
     }
+
+    @Override
+    public String toString(){
+        return this.identifier+" "+this.value;
+    }
 }

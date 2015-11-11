@@ -21,4 +21,9 @@ public class BooleanUnaryOperatorExpression extends BooleanExpression {
     public BooleanExpression getExpression() {
         return expression;
     }
+
+    @Override
+    public String toString(){
+        return this.operator+this.expression;
+    }
 }

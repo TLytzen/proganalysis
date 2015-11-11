@@ -44,4 +44,9 @@ public class IntDeclaration extends Node {
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitIntDeclaration(this, data);
     }
+
+    @Override
+    public String toString(){
+        return this.identifier;
+    }
 }

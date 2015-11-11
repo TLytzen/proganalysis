@@ -31,4 +31,6 @@ public abstract class BooleanExpression extends Node{
     public <T, S> T accept(Visitor<T, S> visitor, S data) {
         return visitor.visitBooleanExpression(this, data);
     }
+
+
 }
