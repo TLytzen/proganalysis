@@ -16,5 +16,8 @@ public class ArithmeticConstantExpression extends ArithmeticExpression {
         return value;
     }
 
-
+    @Override
+    public String toString(){
+        return ""+value;
+    }
 }

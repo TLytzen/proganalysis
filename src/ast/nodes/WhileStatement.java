@@ -71,6 +71,6 @@ public class WhileStatement extends Node {
 
     @Override
     public String toString(){
-        return "while " + condition + " do";
+        return condition;
     }
 }
