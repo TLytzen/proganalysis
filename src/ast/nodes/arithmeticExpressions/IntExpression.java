@@ -17,4 +17,9 @@ public class IntExpression extends ArithmeticExpression {
     public String getIdentifier() {
         return identifier;
     }
+
+    @Override
+    public String toString(){
+        return this.identifier;
+    }
 }

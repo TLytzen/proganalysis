@@ -22,4 +22,9 @@ public class ArrayExpression extends ArithmeticExpression {
     public ArithmeticExpression getIndex() {
         return index;
     }
+
+    @Override
+    public String toString(){
+        return this.identifier+this.index;
+    }
 }
