@@ -31,4 +31,9 @@ public class SetWorklist implements Worklist {
         this.equations.remove(first);
         return first;
     }
+
+    @Override
+    public boolean isEmpty() {
+        return this.equations.isEmpty();
+    }
 }

@@ -51,16 +51,21 @@ public class RDLattice implements CompleteLattice<RDLattice> {
         this.variables[set.getVariable()] = union(this.variables[set.getVariable()], set.getSet());
     }
 
+    @Override
+    public RDLattice bottom() {
+        return new RDLattice(this.variables.length);
+    }
+
     /*
-    * Returns a value indicating whether s1 is a subset of s2
-    * */
+        * Returns a value indicating whether s1 is a subset of s2
+        * */
     private boolean isSubset(long s1, long s2)
     {
-        return (s1 & (~s2)) > 0;
+        return (s1 & (~s2)) == 0;
     }
 
     private long union(long s1, long s2){
-        return s1 & s2;
+        return s1 | s2;
     }
 
     private long setMinus(long s1, long s2)

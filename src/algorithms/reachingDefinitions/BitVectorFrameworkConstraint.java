@@ -5,6 +5,7 @@ import algorithms.CompleteLattice;
 import algorithms.Equation;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
@@ -25,9 +26,14 @@ public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
 
 
     @Override
-    public RDLattice evaluate(RDLattice lattice) {
-
-        RDLattice result = new RDLattice(lattice);
+    public RDLattice evaluate(CompleteLattice[] analysis) {
+        RDLattice result;
+        if (this.rightHandSideVariable != null){
+            result = new RDLattice((RDLattice)analysis[this.rightHandSideVariable]);
+        }
+        else{
+            result = ((RDLattice)analysis[this.leftHandSideVariable]).bottom();
+        }
 
         if (genSet != null)
         {
@@ -38,7 +44,7 @@ public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
             result.removeSet(this.killSet);
         }
 
-        return null;
+        return result;
     }
 
     @Override
@@ -47,11 +53,11 @@ public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
     }
 
     @Override
-    public Set<Integer> influences() {
+    public List<Integer> influences() {
         if (this.rightHandSideVariable != null){
-            return Collections.singleton(this.rightHandSideVariable);
+            return Collections.singletonList(this.rightHandSideVariable);
         }
 
-        return Collections.EMPTY_SET;
+        return Collections.EMPTY_LIST;
     }
 }

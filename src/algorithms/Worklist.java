@@ -7,4 +7,6 @@ public interface Worklist {
     void insert(Equation equation);
 
     Equation extract();
+
+    boolean isEmpty();
 }
