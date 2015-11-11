@@ -22,10 +22,8 @@ public class Print {
             System.out.println(line);
 
         }
-
-
-
     }
+
     private class PrettyPrinter extends GraphWalker<String>{
         CompleteLattice[] result;
         FlowVisitor flowVisitor = new FlowVisitor();
@@ -47,53 +45,46 @@ public class Print {
     private class FlowVisitor extends Visitor<String,CompleteLattice>{
         @Override
         public String visitArrayAssignment(ArrayAssignment arrayAssignment, CompleteLattice data) {
-            return "["+arrayAssignment.toString()+"]"+"^"+arrayAssignment.getLabel();
+            return "["+arrayAssignment.toString()+"]"+"^"+arrayAssignment.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitArrayDeclaration(ArrayDeclaration arrayDeclaration, CompleteLattice data) {
-            return "["+arrayDeclaration.toString()+"]"+"^"+arrayDeclaration.getLabel();
+            return "["+arrayDeclaration.toString()+"]"+"^"+arrayDeclaration.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitIntAssignment(IntAssignment intAssignment, CompleteLattice data) {
-            return "["+intAssignment.toString()+"]"+"^"+intAssignment.getLabel();
+            return "["+intAssignment.toString()+"]"+"^"+intAssignment.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitIntDeclaration(IntDeclaration intDeclaration, CompleteLattice data){
-            return "["+intDeclaration.toString()+"]"+"^"+intDeclaration.getLabel();
+            return "["+intDeclaration.toString()+"]"+"^"+intDeclaration.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitReadArrayStatement(ReadArrayStatement readArrayStatement, CompleteLattice data){
-            return "["+ readArrayStatement.toString()+"]"+"^"+readArrayStatement.getLabel();
+            return "["+ readArrayStatement.toString()+"]"+"^"+readArrayStatement.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitReadIntStatement(ReadIntStatement readIntStatement, CompleteLattice data){
-            return "[" + readIntStatement.toString()+"]"+"^"+readIntStatement.getLabel();
+            return "[" + readIntStatement.toString()+"]"+"^"+readIntStatement.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitSkipStatement(SkipStatement skipStatement, CompleteLattice data){
-            return "[" + skipStatement.toString()+"]"+"^"+skipStatement.getLabel();
+            return "[" + skipStatement.toString()+"]"+"^"+skipStatement.getLabel()+" : "+ data.toString();
         }
         @Override
         public String visitWhileStatement(WhileStatement whileStatement, CompleteLattice data){
-            return "["+whileStatement.toString()+"]"+"^"+whileStatement.getLabel();
+            return "["+whileStatement.toString()+"]"+"^"+whileStatement.getLabel()+" : "+ data.toString();
         }
 
         @Override
         public String visitWriteStatement(WriteStatement writeStatement, CompleteLattice data){
-            return "["+writeStatement.toString()+"]"+"^"+writeStatement.getLabel();
+            return "["+writeStatement.toString()+"]"+"^"+writeStatement.getLabel()+" : "+ data.toString();
         }
-
-
-
     }
-
-
-
-
 }

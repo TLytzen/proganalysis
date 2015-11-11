@@ -2,18 +2,25 @@ package algorithms.reachingDefinitions;
 
 import algorithms.CompleteLattice;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class RDLattice implements CompleteLattice<RDLattice> {
 
     private long[] variables;
+    private  HashMap<String, Integer> variableNames;
 
-    public RDLattice(int numberOfVariables)
+    public RDLattice( HashMap<String, Integer> variableNames)
     {
-        this.variables = new long[numberOfVariables];
+        this.variables = new long[variableNames.size()];
+        this.variableNames = variableNames;
     }
 
     public RDLattice(RDLattice baseLattice)
     {
         this.variables = new long[baseLattice.variables.length];
+        this.variableNames = baseLattice.variableNames;
+
         for (int variable = 0; variable < this.variables.length; variable++){
             this.variables[variable] = baseLattice.variables[variable];
         }
@@ -32,7 +39,7 @@ public class RDLattice implements CompleteLattice<RDLattice> {
 
     @Override
     public RDLattice join(RDLattice lattice) {
-        RDLattice result = new RDLattice(this.variables.length);
+        RDLattice result = new RDLattice(this.variableNames);
 
         for (int a = 0; a < this.variables.length; a++){
             result.variables[a] = union(this.variables[a], lattice.variables[a]);
@@ -53,12 +60,33 @@ public class RDLattice implements CompleteLattice<RDLattice> {
 
     @Override
     public RDLattice bottom() {
-        return new RDLattice(this.variables.length);
+        return new RDLattice(this.variableNames);
+    }
+
+    @Override
+    public String toString() {
+        HashMap<Integer, String> variableMapping = new HashMap<>();
+        for (String name : this.variableNames.keySet()){
+            variableMapping.put(this.variableNames.get(name), name);
+        }
+
+        StringBuilder builder = new StringBuilder();
+        builder.append('{');
+        for (int a = 0; a < this.variables.length; a++){
+            if (builder.length() > 1){
+                builder.append(", ");
+            }
+
+            builder.append(BitVectorSet.print(this.variables[a], "" + variableMapping.get(a)));
+        }
+
+        builder.append('}');
+        return builder.toString();
     }
 
     /*
-        * Returns a value indicating whether s1 is a subset of s2
-        * */
+                * Returns a value indicating whether s1 is a subset of s2
+                * */
     private boolean isSubset(long s1, long s2)
     {
         return (s1 & (~s2)) == 0;

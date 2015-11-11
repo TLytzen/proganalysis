@@ -84,7 +84,7 @@ public class RDAnalysis {
         }
 
         // ADD the equations to the worklist algorithm
-        return WorklistAlgorithm.solve(equations, graph.size(), new SetWorklist(), new RDLattice(variables.size()));
+        return WorklistAlgorithm.solve(equations, graph.size(), new SetWorklist(), new RDLattice(variables));
     }
 
     public static String getArrayElementIdentifier(String arrayIdentifier, int element){

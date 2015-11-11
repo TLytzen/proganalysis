@@ -23,7 +23,31 @@ public class BitVectorSet {
         return set;
     }
 
+    public static String print(long set, String variableName){
+        StringBuilder builder = new StringBuilder();
+        if ((set & QuestionMarkSet) > 0){
+            builder.append("(");
+            builder.append(variableName);
+            builder.append(",?)");
+        }
+        int label = 0;
+        for (long workingSet = set >> 1; workingSet > 0; workingSet = workingSet >> 1, label++){
+            if (builder.length() > 0){
+                builder.append(", ");
+            }
+            builder.append("(");
+            builder.append(variableName);
+            builder.append(",");
+            builder.append(label);
+            builder.append(")");
+        }
+
+        return builder.toString();
+    }
+
     public static long getSetForLabel(int labelNum){
         return 1 << (1 + labelNum);
     }
+
+
 }

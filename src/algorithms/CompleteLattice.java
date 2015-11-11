@@ -8,4 +8,6 @@ public interface CompleteLattice<T extends CompleteLattice>  {
     T join(T lattice);
 
     T bottom();
+
+
 }
