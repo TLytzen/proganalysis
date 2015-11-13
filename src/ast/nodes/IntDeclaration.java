@@ -47,6 +47,6 @@ public class IntDeclaration extends Node {
 
     @Override
     public String toString(){
-        return this.identifier;
+        return "int "+this.identifier;
     }
 }

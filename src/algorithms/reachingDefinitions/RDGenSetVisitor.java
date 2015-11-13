@@ -21,7 +21,7 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
         List<BitVectorSet> arrayGenerations = new ArrayList<>();
 
         for (int n = 0; n < arrayDeclarationNode.getLength(); n++){
-            arrayGenerations.add(new BitVectorSet(variables.get(RDAnalysis.getArrayElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), BitVectorSet.getSetForLabel(arrayDeclarationNode.getLabel())));
+            arrayGenerations.add(new BitVectorSet(variables.get(ArrayDeclaration.getElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), BitVectorSet.getSetForLabel(arrayDeclarationNode.getLabel())));
         }
 
         return arrayGenerations;
@@ -37,7 +37,7 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
     public List<BitVectorSet> visitArrayAssignment(ArrayAssignment arrayAssignmentNode, HashMap<String, Integer> variables) {
         if (arrayAssignmentNode.getIndex() instanceof ArithmeticConstantExpression) {
             // The case A[n] := .... where n is a constant
-            String index = RDAnalysis.getArrayElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression) arrayAssignmentNode.getIndex()).getValue());
+            String index = ArrayDeclaration.getElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression) arrayAssignmentNode.getIndex()).getValue());
             if (variables.containsKey(index)) {
                 return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.getSetForLabel(arrayAssignmentNode.getLabel())));
             }
@@ -47,7 +47,7 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
             // The case where A[a_1] := a_2 where a_1 is not a constant expression
             List<BitVectorSet> arrayGenerations = new ArrayList<>();
             for (int n = 0; n < variables.size(); n++) {
-                String index = RDAnalysis.getArrayElementIdentifier(arrayAssignmentNode.getIdentifier(), n);
+                String index = ArrayDeclaration.getElementIdentifier(arrayAssignmentNode.getIdentifier(), n);
                 if (!variables.containsKey(index)) {
                     break;
                 }
@@ -61,14 +61,14 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
 
     @Override
     public List<BitVectorSet> visitReadIntStatement(ReadIntStatement readIntStatement, HashMap<String, Integer> variables) {
-        return Collections.singletonList(new BitVectorSet(variables.get(readIntStatement.getIdentifier()), BitVectorSet.KillVariableSet));
+        return Collections.singletonList(new BitVectorSet(variables.get(readIntStatement.getIdentifier()), BitVectorSet.getSetForLabel(readIntStatement.getLabel())));
     }
 
     @Override
     public List<BitVectorSet> visitReadArrayStatement(ReadArrayStatement readArrayStatement, HashMap<String, Integer> variables) {
         if (readArrayStatement.getArrayExpression().getIndex() instanceof ArithmeticConstantExpression) {
             // The case read A[n]; where n is a constant
-            String index = RDAnalysis.getArrayElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), ((ArithmeticConstantExpression) readArrayStatement.getArrayExpression().getIndex()).getValue());
+            String index = ArrayDeclaration.getElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), ((ArithmeticConstantExpression) readArrayStatement.getArrayExpression().getIndex()).getValue());
             if (variables.containsKey(index)) {
                 return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.getSetForLabel(readArrayStatement.getLabel())));
             }
@@ -78,7 +78,7 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
             // The case read A[a]; where a is not a constant expression
             List<BitVectorSet> arrayGenerations = new ArrayList<>();
             for (int n = 0; n < variables.size(); n++) {
-                String index = RDAnalysis.getArrayElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), n);
+                String index = ArrayDeclaration.getElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), n);
                 if (!variables.containsKey(index)) {
                     break;
                 }

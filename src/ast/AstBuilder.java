@@ -154,7 +154,7 @@ public class AstBuilder extends TheLangBaseVisitor<Node> {
     @Override
     public Node visitBexpr2(TheLangParser.Bexpr2Context ctx) {
         if (ctx.opr() != null) {
-            return new BooleanComparisonExpression((ArithmeticExpression) visit(ctx.aexpr(0)), ctx.opr().toString(), (ArithmeticExpression) visit(ctx.aexpr(1)));
+            return new BooleanComparisonExpression((ArithmeticExpression) visit(ctx.aexpr(0)), ctx.opr().getText(), (ArithmeticExpression) visit(ctx.aexpr(1)));
         } else if (ctx.NOT() != null) {
             return new BooleanUnaryOperatorExpression("NOT", (BooleanExpression) visit(ctx.bexpr()));
         } else if (ctx.TRUE() != null) {

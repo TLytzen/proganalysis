@@ -4,6 +4,7 @@ package graph;
 import ast.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class GraphWalker<T> {
@@ -27,7 +28,10 @@ public abstract class GraphWalker<T> {
             result.add(pre);
         }
 
-        for (int childIndex : graph.getEdges(index)){
+        List<Integer> edges = new ArrayList<>(graph.getEdges(index));
+        Collections.sort(edges);
+
+        for (int childIndex : edges){
             if (!visited[childIndex]){
                 this.visit(graph, childIndex, result);
             }

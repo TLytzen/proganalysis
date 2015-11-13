@@ -1,0 +1,15 @@
+program
+int A[2];
+int x;
+
+read A[0];
+read A[1];
+
+while x < 2 do
+    write A[x];
+    x := x + 1 + 1;
+od
+
+skip;
+
+end

@@ -56,4 +56,12 @@ public class ArrayDeclaration extends Node {
         return "Int "+this.identifier+"["+this.length+"]";
     }
 
+
+    public static String getElementIdentifier(String arrayIdentifier, int element){
+        return getElementIdentifier(arrayIdentifier, "" + element);
+    }
+
+    public static String getElementIdentifier(String arrayIdentifier, String element){
+        return arrayIdentifier+"["+element+"]";
+    }
 }

@@ -24,6 +24,12 @@ public class BitVectorSet {
     }
 
     public static String print(long set, String variableName){
+
+        if (set == KillVariableSet)
+        {
+            return "("+variableName+",[Kill all set])";
+        }
+
         StringBuilder builder = new StringBuilder();
         if ((set & QuestionMarkSet) > 0){
             builder.append("(");
@@ -32,14 +38,17 @@ public class BitVectorSet {
         }
         int label = 0;
         for (long workingSet = set >> 1; workingSet > 0; workingSet = workingSet >> 1, label++){
-            if (builder.length() > 0){
-                builder.append(", ");
+            if ((workingSet & 1) > 0){
+                if (builder.length() > 0){
+                    builder.append(", ");
+                }
+
+                builder.append("(");
+                builder.append(variableName);
+                builder.append(",");
+                builder.append(label);
+                builder.append(")");
             }
-            builder.append("(");
-            builder.append(variableName);
-            builder.append(",");
-            builder.append(label);
-            builder.append(")");
         }
 
         return builder.toString();
@@ -49,5 +58,10 @@ public class BitVectorSet {
         return 1 << (1 + labelNum);
     }
 
+    @Override
+    public String toString() {
 
+
+        return BitVectorSet.print(this.set, ""+this.variable);
+    }
 }

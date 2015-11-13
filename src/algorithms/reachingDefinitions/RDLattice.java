@@ -2,8 +2,10 @@ package algorithms.reachingDefinitions;
 
 import algorithms.CompleteLattice;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class RDLattice implements CompleteLattice<RDLattice> {
 
@@ -84,9 +86,35 @@ public class RDLattice implements CompleteLattice<RDLattice> {
         return builder.toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        RDLattice other;
+        if (!(obj instanceof RDLattice)){
+            return false;
+        }
+        other = (RDLattice)obj;
+
+        if (this.variables.length != other.variables.length || !this.variableNames.equals(other.variableNames)){
+            return false;
+        }
+
+        for (int variable = 0; variable < this.variables.length; variable++){
+            if (this.variables[variable] != other.variables[variable]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(this.variables);
+    }
+
     /*
-                * Returns a value indicating whether s1 is a subset of s2
-                * */
+                        * Returns a value indicating whether s1 is a subset of s2
+                        * */
     private boolean isSubset(long s1, long s2)
     {
         return (s1 & (~s2)) == 0;

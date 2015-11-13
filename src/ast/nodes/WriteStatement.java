@@ -47,6 +47,6 @@ public class WriteStatement extends Node {
 
     @Override
     public String toString(){
-        return "Write "+ this.arithmeticExpression.toString();
+        return "write "+ this.arithmeticExpression.toString();
     }
 }

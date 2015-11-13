@@ -37,7 +37,7 @@ public class RDAnalysis {
             if (node instanceof ArrayDeclaration){
                 ArrayDeclaration arrayDeclaration = (ArrayDeclaration)node;
                 for (int n = 0; n < arrayDeclaration.getLength(); n++){
-                    String index = getArrayElementIdentifier(arrayDeclaration.getIdentifier(), n);
+                    String index = ArrayDeclaration.getElementIdentifier(arrayDeclaration.getIdentifier(), n);
                     if (!variables.containsKey(index)){
                         variables.put(index, variableCount++);
                     }
@@ -87,8 +87,6 @@ public class RDAnalysis {
         return WorklistAlgorithm.solve(equations, graph.size(), new SetWorklist(), new RDLattice(variables));
     }
 
-    public static String getArrayElementIdentifier(String arrayIdentifier, int element){
-        return arrayIdentifier+"["+element+"]";
-    }
+
 
 }

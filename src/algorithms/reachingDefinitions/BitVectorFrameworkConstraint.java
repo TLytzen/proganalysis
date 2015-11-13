@@ -35,13 +35,13 @@ public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
             result = ((RDLattice)analysis[this.leftHandSideVariable]).bottom();
         }
 
+        if (killSet != null){
+            result.removeSet(this.killSet);
+        }
+
         if (genSet != null)
         {
             result.addSet(this.genSet);
-        }
-
-        if (killSet != null){
-            result.removeSet(this.killSet);
         }
 
         return result;
@@ -59,5 +59,35 @@ public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
         }
 
         return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder rightHandSide = new StringBuilder();
+
+        if (this.killSet != null) {
+            rightHandSide.append('(');
+        }
+
+        if (this.rightHandSideVariable != null){
+            rightHandSide.append(this.rightHandSideVariable.toString());
+        }
+
+        if (this.killSet != null)
+        {
+            rightHandSide.append(" \\ ");
+            rightHandSide.append(this.killSet.toString());
+            rightHandSide.append(')');
+        }
+
+        if (this.genSet != null){
+            if (rightHandSide.length() > 0){
+                rightHandSide.append(" U ");
+            }
+
+            rightHandSide.append(this.genSet.toString());
+        }
+
+        return this.leftHandSideVariable + " [= " + rightHandSide.toString();
     }
 }

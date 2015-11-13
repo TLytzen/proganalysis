@@ -23,7 +23,7 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
         List<BitVectorSet> arrayGenerations = new ArrayList<>();
 
         for (int n = 0; n < arrayDeclarationNode.getLength(); n++){
-            arrayGenerations.add(new BitVectorSet(variables.get(RDAnalysis.getArrayElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), BitVectorSet.KillVariableSet));
+            arrayGenerations.add(new BitVectorSet(variables.get(ArrayDeclaration.getElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), BitVectorSet.KillVariableSet));
         }
 
         return arrayGenerations;
@@ -48,7 +48,7 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
         if(arrayAssignmentNode.getIndex() instanceof ArithmeticConstantExpression)
         {
             // The case  A[n] := ....; where n is constant
-            String index = RDAnalysis.getArrayElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression) arrayAssignmentNode.getIndex()).getValue());
+            String index = ArrayDeclaration.getElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression) arrayAssignmentNode.getIndex()).getValue());
             if (variables.containsKey(index)){
                 return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.KillVariableSet));
             }
@@ -68,7 +68,7 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
 
         if(readArrayStatement.getArrayExpression().getIndex() instanceof ArithmeticConstantExpression) {
             // The case read A[n] where  n is a constant
-            String index = RDAnalysis.getArrayElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), ((ArithmeticConstantExpression) readArrayStatement.getArrayExpression().getIndex()).getValue());
+            String index = ArrayDeclaration.getElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), ((ArithmeticConstantExpression) readArrayStatement.getArrayExpression().getIndex()).getValue());
             if (variables.containsKey(index)){
                 return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.KillVariableSet));
             }
