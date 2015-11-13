@@ -13,7 +13,9 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
 
     @Override
     public List<BitVectorSet> visitIntDeclaration(IntDeclaration intDeclaration, HashMap<String, Integer> variables) {
-        return Collections.singletonList(new BitVectorSet(variables.get(intDeclaration.getIdentifier()), BitVectorSet.getSetForLabel(intDeclaration.getLabel())));
+        String index = intDeclaration.getIdentifier();
+        int label = intDeclaration.getLabel();
+        return Collections.singletonList(BitVectorSet.getSetForLabel(index, variables, label));
     }
 
     @Override
@@ -21,7 +23,10 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
         List<BitVectorSet> arrayGenerations = new ArrayList<>();
 
         for (int n = 0; n < arrayDeclarationNode.getLength(); n++){
-            arrayGenerations.add(new BitVectorSet(variables.get(ArrayDeclaration.getElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), BitVectorSet.getSetForLabel(arrayDeclarationNode.getLabel())));
+            String index = ArrayDeclaration.getElementIdentifier(arrayDeclarationNode.getIdentifier(), n);
+            int label = arrayDeclarationNode.getLabel();
+
+            arrayGenerations.add(BitVectorSet.getSetForLabel(index, variables, label));
         }
 
         return arrayGenerations;
@@ -30,29 +35,36 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
     @Override
     public List<BitVectorSet> visitIntAssignment(IntAssignment intAssignmentNode, HashMap<String, Integer> variables) {
         // x := ... where x is a int
-        return Collections.singletonList(new BitVectorSet(variables.get(intAssignmentNode.getIdentifier()), BitVectorSet.getSetForLabel(intAssignmentNode.getLabel())));
+        String index = intAssignmentNode.getIdentifier();
+        int label = intAssignmentNode.getLabel();
+        return Collections.singletonList(BitVectorSet.getSetForLabel(index, variables, label));
     }
 
     @Override
     public List<BitVectorSet> visitArrayAssignment(ArrayAssignment arrayAssignmentNode, HashMap<String, Integer> variables) {
+
         if (arrayAssignmentNode.getIndex() instanceof ArithmeticConstantExpression) {
             // The case A[n] := .... where n is a constant
             String index = ArrayDeclaration.getElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression) arrayAssignmentNode.getIndex()).getValue());
+
             if (variables.containsKey(index)) {
-                return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.getSetForLabel(arrayAssignmentNode.getLabel())));
+                int label = arrayAssignmentNode.getLabel();
+                return Collections.singletonList(BitVectorSet.getSetForLabel(index, variables, label));
             }
 
             return null;
         } else {
             // The case where A[a_1] := a_2 where a_1 is not a constant expression
             List<BitVectorSet> arrayGenerations = new ArrayList<>();
+            int label = arrayAssignmentNode.getLabel();
+
             for (int n = 0; n < variables.size(); n++) {
                 String index = ArrayDeclaration.getElementIdentifier(arrayAssignmentNode.getIdentifier(), n);
                 if (!variables.containsKey(index)) {
                     break;
                 }
 
-                arrayGenerations.add(new BitVectorSet(variables.get(index), BitVectorSet.getSetForLabel(arrayAssignmentNode.getLabel())));
+                arrayGenerations.add(BitVectorSet.getSetForLabel(index, variables, label));
             }
 
             return arrayGenerations;
@@ -61,7 +73,9 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
 
     @Override
     public List<BitVectorSet> visitReadIntStatement(ReadIntStatement readIntStatement, HashMap<String, Integer> variables) {
-        return Collections.singletonList(new BitVectorSet(variables.get(readIntStatement.getIdentifier()), BitVectorSet.getSetForLabel(readIntStatement.getLabel())));
+        String index = readIntStatement.getIdentifier();
+        int label = readIntStatement.getLabel();
+        return Collections.singletonList(BitVectorSet.getSetForLabel(index, variables, label));
     }
 
     @Override
@@ -70,20 +84,23 @@ public class RDGenSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String,
             // The case read A[n]; where n is a constant
             String index = ArrayDeclaration.getElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), ((ArithmeticConstantExpression) readArrayStatement.getArrayExpression().getIndex()).getValue());
             if (variables.containsKey(index)) {
-                return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.getSetForLabel(readArrayStatement.getLabel())));
+                int label = readArrayStatement.getLabel();
+                return Collections.singletonList(BitVectorSet.getSetForLabel(index, variables, label));
             }
 
             return null;
         } else {
             // The case read A[a]; where a is not a constant expression
             List<BitVectorSet> arrayGenerations = new ArrayList<>();
+            int label = readArrayStatement.getLabel();
+
             for (int n = 0; n < variables.size(); n++) {
                 String index = ArrayDeclaration.getElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), n);
                 if (!variables.containsKey(index)) {
                     break;
                 }
 
-                arrayGenerations.add(new BitVectorSet(variables.get(index), BitVectorSet.getSetForLabel(readArrayStatement.getLabel())));
+                arrayGenerations.add(BitVectorSet.getSetForLabel(index, variables, label));
             }
 
             return arrayGenerations;

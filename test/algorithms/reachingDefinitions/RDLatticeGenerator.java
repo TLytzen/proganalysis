@@ -31,10 +31,11 @@ public class RDLatticeGenerator extends Generator<RDLattice> {
 
         RDLattice lattice = previous == null ? new RDLattice(variables) : new RDLattice(previous);
 
-        for(int variable = 0; variable < variables.size(); variable++) {
+        for(String variableName : variables.keySet()) {
+            int variable = variables.get(variableName);
             int numberOfLabels = sourceOfRandomness.nextInt(3,6);
             for (int label = 0; label < numberOfLabels; label++) {
-                lattice.addSet(new BitVectorSet(variable, BitVectorSet.getSetForLabel(sourceOfRandomness.nextInt(0, LABEL_COUNT - 1))));
+                lattice.addSet(BitVectorSet.getSetForLabel(variableName, variable, sourceOfRandomness.nextInt(0, LABEL_COUNT - 1)));
             }
         }
 

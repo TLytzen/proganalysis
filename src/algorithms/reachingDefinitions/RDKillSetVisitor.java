@@ -15,7 +15,8 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
 
     @Override
     public List<BitVectorSet> visitIntDeclaration(IntDeclaration intDeclarationNode, HashMap<String, Integer> variables) {
-        return Collections.singletonList(new BitVectorSet(variables.get(intDeclarationNode.getIdentifier()), BitVectorSet.KillVariableSet));
+        String index = intDeclarationNode.getIdentifier();
+        return Collections.singletonList(BitVectorSet.generateKillVariableSet(index, variables));
     }
 
     @Override
@@ -23,7 +24,8 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
         List<BitVectorSet> arrayGenerations = new ArrayList<>();
 
         for (int n = 0; n < arrayDeclarationNode.getLength(); n++){
-            arrayGenerations.add(new BitVectorSet(variables.get(ArrayDeclaration.getElementIdentifier(arrayDeclarationNode.getIdentifier(), n)), BitVectorSet.KillVariableSet));
+            String index = ArrayDeclaration.getElementIdentifier(arrayDeclarationNode.getIdentifier(), n);
+            arrayGenerations.add(BitVectorSet.generateKillVariableSet(index, variables));
         }
 
         return arrayGenerations;
@@ -34,7 +36,8 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
     * */
     @Override
     public List<BitVectorSet> visitIntAssignment(IntAssignment intAssignmentNode, HashMap<String, Integer> variables) {
-        return Collections.singletonList(new BitVectorSet(variables.get(intAssignmentNode.getIdentifier()), BitVectorSet.KillVariableSet));
+        String index = intAssignmentNode.getIdentifier();
+        return Collections.singletonList(BitVectorSet.generateKillVariableSet(index, variables));
     }
 
     /*
@@ -50,7 +53,7 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
             // The case  A[n] := ....; where n is constant
             String index = ArrayDeclaration.getElementIdentifier(arrayAssignmentNode.getIdentifier(), ((ArithmeticConstantExpression) arrayAssignmentNode.getIndex()).getValue());
             if (variables.containsKey(index)){
-                return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.KillVariableSet));
+                return Collections.singletonList(BitVectorSet.generateKillVariableSet(index, variables));
             }
         }
 
@@ -60,7 +63,8 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
 
     @Override
     public List<BitVectorSet> visitReadIntStatement(ReadIntStatement readIntStatement, HashMap<String, Integer> variables) {
-        return Collections.singletonList(new BitVectorSet(variables.get(readIntStatement.getIdentifier()), BitVectorSet.KillVariableSet));
+        String index = readIntStatement.getIdentifier();
+        return Collections.singletonList(BitVectorSet.generateKillVariableSet(index, variables));
     }
 
     @Override
@@ -70,7 +74,7 @@ public class RDKillSetVisitor extends Visitor<List<BitVectorSet>, HashMap<String
             // The case read A[n] where  n is a constant
             String index = ArrayDeclaration.getElementIdentifier(readArrayStatement.getArrayExpression().getIdentifier(), ((ArithmeticConstantExpression) readArrayStatement.getArrayExpression().getIndex()).getValue());
             if (variables.containsKey(index)){
-                return Collections.singletonList(new BitVectorSet(variables.get(index), BitVectorSet.KillVariableSet));
+                return Collections.singletonList(BitVectorSet.generateKillVariableSet(index, variables));
             }
         }
 

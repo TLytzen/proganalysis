@@ -13,9 +13,9 @@ import static  org.junit.Assert.*;
 @RunWith(Theories.class)
 public class BitVectorSetTest {
 
-    @Theory public void SerializationDeserialization(@ForAll @InRange(min="0", max="63") int label){
-        BitVectorSet set = new BitVectorSet(0, BitVectorSet.getSetForLabel(label));
-        assertEquals("(0,"+label+")", set.toString());
+    @Theory public void SerializationDeserialization(@ForAll @InRange(min="0", max="61") int label){
+        BitVectorSet set = BitVectorSet.getSetForLabel("XYZ", 0, label);
+        assertEquals("(XYZ,"+label+")", set.toString());
     }
 
 }

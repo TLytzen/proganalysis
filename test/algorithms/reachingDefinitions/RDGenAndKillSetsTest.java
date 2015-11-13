@@ -16,16 +16,11 @@ public class RDGenAndKillSetsTest {
     private RDGenSetVisitor genSetVisitor;
     private RDKillSetVisitor killSetVisitor;
     private HashMap<String, Integer> variables;
-    private HashMap<Integer, String> variableMapping = new HashMap<>();
 
     @Before public void setup(){
         this.genSetVisitor = new RDGenSetVisitor();
         this.killSetVisitor = new RDKillSetVisitor();
         this.variables = AstNodeGenerator.variablesWithEveryElement();
-
-        for (String name : this.variables.keySet()){
-            variableMapping.put(this.variables.get(name), name);
-        }
     }
 
     @Test public void testIntDeclaration(){
@@ -166,7 +161,6 @@ public class RDGenAndKillSetsTest {
         assertTrue(sets.size() > index);
 
         BitVectorSet set = sets.get(index);
-        String printedSet = BitVectorSet.print(set.getSet(), this.variableMapping.get(set.getVariable()));
-        assertEquals(value, printedSet);
+        assertEquals(value, set.toString());
     }
 }

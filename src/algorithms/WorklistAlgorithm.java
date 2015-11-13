@@ -11,10 +11,10 @@ public class WorklistAlgorithm {
         List<Equation>[] infl = new List[numberOfEquationVariables];
 
         Worklist worklist = worklistType.getEmpty();
-
+        CompleteLattice bottom = latticeType.bottom();
         for (Equation e : equations){
             worklist.insert(e);
-            analysis[e.getIndex()] = latticeType.bottom();
+            analysis[e.getIndex()] = bottom;
             infl[e.getIndex()] = new ArrayList<>();
         }
 

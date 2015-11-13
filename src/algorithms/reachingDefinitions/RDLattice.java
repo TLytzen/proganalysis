@@ -9,29 +9,34 @@ import java.util.Objects;
 
 public class RDLattice implements CompleteLattice<RDLattice> {
 
-    private long[] variables;
-    private  HashMap<String, Integer> variableNames;
+    private BitVectorSet[] variables;
 
     public RDLattice( HashMap<String, Integer> variableNames)
     {
-        this.variables = new long[variableNames.size()];
-        this.variableNames = variableNames;
+        this.variables = new BitVectorSet[variableNames.size()];
+        for(String variableName : variableNames.keySet()){
+            int index = variableNames.get(variableName);
+            this.variables[index] = BitVectorSet.getEmptySet(variableName, index);
+        }
     }
 
     public RDLattice(RDLattice baseLattice)
     {
-        this.variables = new long[baseLattice.variables.length];
-        this.variableNames = baseLattice.variableNames;
+        this.variables = new BitVectorSet[baseLattice.variables.length];
 
         for (int variable = 0; variable < this.variables.length; variable++){
             this.variables[variable] = baseLattice.variables[variable];
         }
     }
 
+    private RDLattice(BitVectorSet[] variables){
+        this.variables = variables;
+    }
+
     @Override
     public boolean leq(RDLattice lattice) {
         for (int a = 0; a < this.variables.length; a++){
-            if (!isSubset(this.variables[a], lattice.variables[a])){
+            if (!this.variables[a].isSubsetOf(lattice.variables[a])){
                 return false;
             }
         }
@@ -41,37 +46,38 @@ public class RDLattice implements CompleteLattice<RDLattice> {
 
     @Override
     public RDLattice join(RDLattice lattice) {
-        RDLattice result = new RDLattice(this.variableNames);
+        BitVectorSet[] variables = new BitVectorSet[this.variables.length];
 
         for (int a = 0; a < this.variables.length; a++){
-            result.variables[a] = union(this.variables[a], lattice.variables[a]);
+            variables[a] = this.variables[a].union(lattice.variables[a]);
         }
 
-        return result;
+        return new RDLattice(variables);
     }
 
     public void removeSet(BitVectorSet set)
     {
-        this.variables[set.getVariable()] = setMinus(this.variables[set.getVariable()], set.getSet());
+        this.variables[set.getVariable()] = this.variables[set.getVariable()].setMinus(set);
     }
 
     public void addSet(BitVectorSet set)
     {
-        this.variables[set.getVariable()] = union(this.variables[set.getVariable()], set.getSet());
+        this.variables[set.getVariable()] = this.variables[set.getVariable()].union(set);
     }
 
     @Override
     public RDLattice bottom() {
-        return new RDLattice(this.variableNames);
+        BitVectorSet[] variables = new BitVectorSet[this.variables.length];
+
+        for (int a = 0; a < this.variables.length; a++){
+            variables[a] = BitVectorSet.getEmptySet(this.variables[a].getVariableName(), this.variables[a].getVariable());
+        }
+
+        return new RDLattice(variables);
     }
 
     @Override
     public String toString() {
-        HashMap<Integer, String> variableMapping = new HashMap<>();
-        for (String name : this.variableNames.keySet()){
-            variableMapping.put(this.variableNames.get(name), name);
-        }
-
         StringBuilder builder = new StringBuilder();
         builder.append('{');
         for (int a = 0; a < this.variables.length; a++){
@@ -79,7 +85,7 @@ public class RDLattice implements CompleteLattice<RDLattice> {
                 builder.append(", ");
             }
 
-            builder.append(BitVectorSet.print(this.variables[a], "" + variableMapping.get(a)));
+            builder.append(this.variables[a]);
         }
 
         builder.append('}');
@@ -94,12 +100,8 @@ public class RDLattice implements CompleteLattice<RDLattice> {
         }
         other = (RDLattice)obj;
 
-        if (this.variables.length != other.variables.length || !this.variableNames.equals(other.variableNames)){
-            return false;
-        }
-
         for (int variable = 0; variable < this.variables.length; variable++){
-            if (this.variables[variable] != other.variables[variable]){
+            if (!(this.variables[variable].equals(other.variables[variable]))){
                 return false;
             }
         }
@@ -112,20 +114,5 @@ public class RDLattice implements CompleteLattice<RDLattice> {
         return Arrays.hashCode(this.variables);
     }
 
-    /*
-                        * Returns a value indicating whether s1 is a subset of s2
-                        * */
-    private boolean isSubset(long s1, long s2)
-    {
-        return (s1 & (~s2)) == 0;
-    }
 
-    private long union(long s1, long s2){
-        return s1 | s2;
-    }
-
-    private long setMinus(long s1, long s2)
-    {
-        return s1 & (~s2);
-    }
 }

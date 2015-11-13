@@ -18,42 +18,21 @@ import java.util.*;
 public class RDAnalysis {
 
 
-    public static CompleteLattice[] analyse(FlowGraph graph)
+    public static CompleteLattice[] analyse(FlowGraph graph, Worklist worklist)
     {
-        HashMap<String, Integer> variables = new HashMap<>();
+        // Map each variable name in the graph to a number
+        HashMap<String, Integer> variables = getVariablesMap(graph);
 
-        int variableCount = 0;
-        for (int vertice = 0; vertice < graph.size(); vertice++){
-            Node node = graph.getVertice(vertice);
-
-
-            if (node instanceof IntDeclaration){
-                IntDeclaration intDeclaration = (IntDeclaration)node;
-                if (!variables.containsKey(intDeclaration.getIdentifier())){
-                    variables.put(intDeclaration.getIdentifier(), variableCount++);
-                }
-            }
-
-            if (node instanceof ArrayDeclaration){
-                ArrayDeclaration arrayDeclaration = (ArrayDeclaration)node;
-                for (int n = 0; n < arrayDeclaration.getLength(); n++){
-                    String index = ArrayDeclaration.getElementIdentifier(arrayDeclaration.getIdentifier(), n);
-                    if (!variables.containsKey(index)){
-                        variables.put(index, variableCount++);
-                    }
-                }
-            }
-        }
-
+        // Generate the constraints
         List<Equation> equations = new ArrayList<>();
-
-        // Create the constraints for the initial values
-        for (int variable = 0; variable < variableCount; variable++){
-            equations.add(new BitVectorFrameworkConstraint(graph.getInitialNode(), null, new BitVectorSet(variable, BitVectorSet.QuestionMarkSet), null));
-        }
-
         RDGenSetVisitor genSetVisitor = new RDGenSetVisitor();
         RDKillSetVisitor killSetVisitor = new RDKillSetVisitor();
+
+        // Create the constraints for the initial values
+        for (String variableName : variables.keySet()){
+            int variable = variables.get(variableName);
+            equations.add(new BitVectorFrameworkConstraint(graph.getInitialNode(), null, BitVectorSet.generateQuestionMarkSet (variableName, variable), null));
+        }
 
         // Create the rest of the constraints
         for (int vertice = 0; vertice < graph.size(); vertice++){
@@ -83,10 +62,37 @@ public class RDAnalysis {
             }
         }
 
-        // ADD the equations to the worklist algorithm
-        return WorklistAlgorithm.solve(equations, graph.size(), new SetWorklist(), new RDLattice(variables));
+        // Solve the constraints using the worklist algorithm
+        return WorklistAlgorithm.solve(equations, graph.size(), worklist, new RDLattice(variables));
     }
 
+    private static HashMap<String, Integer> getVariablesMap(FlowGraph graph) {
+        HashMap<String, Integer> variables = new HashMap<>();
+
+        int variableCount = 0;
+        for (int vertice = 0; vertice < graph.size(); vertice++){
+            Node node = graph.getVertice(vertice);
+
+
+            if (node instanceof IntDeclaration){
+                IntDeclaration intDeclaration = (IntDeclaration)node;
+                if (!variables.containsKey(intDeclaration.getIdentifier())){
+                    variables.put(intDeclaration.getIdentifier(), variableCount++);
+                }
+            }
+
+            if (node instanceof ArrayDeclaration){
+                ArrayDeclaration arrayDeclaration = (ArrayDeclaration)node;
+                for (int n = 0; n < arrayDeclaration.getLength(); n++){
+                    String index = ArrayDeclaration.getElementIdentifier(arrayDeclaration.getIdentifier(), n);
+                    if (!variables.containsKey(index)){
+                        variables.put(index, variableCount++);
+                    }
+                }
+            }
+        }
+        return variables;
+    }
 
 
 }

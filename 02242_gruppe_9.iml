@@ -14,7 +14,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="antlr-4.5.1-complete" level="project" />
-    <orderEntry type="library" name="com.pholser:junit-quickcheck-core:0.5-alpha-1" level="project" />
-    <orderEntry type="library" name="com.pholser:junit-quickcheck-generators:0.5-alpha-2" level="project" />
+    <orderEntry type="library" name="com.pholser:junit-quickcheck-core:0.5" level="project" />
+    <orderEntry type="library" name="com.pholser:junit-quickcheck-generators:0.5" level="project" />
   </component>
 </module>

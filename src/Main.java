@@ -2,6 +2,7 @@
 
 import algorithms.CompleteLattice;
 import algorithms.reachingDefinitions.RDAnalysis;
+import algorithms.worklists.SetWorklist;
 import antlr.TheLangLexer;
 import antlr.TheLangParser;
 import ast.AstBuilder;
@@ -25,7 +26,7 @@ public class Main {
         FlowGraph graph = FlowGraph.constructGraph(rootNode);
 
         // Run the reaching definitions analysis
-        CompleteLattice[] rdAnalysis = RDAnalysis.analyse(graph);
+        CompleteLattice[] rdAnalysis = RDAnalysis.analyse(graph, new SetWorklist());
 
         // Print the result
         Printer print = new Printer();
