@@ -1,5 +1,6 @@
 package graph;
 
+import ast.Edge;
 import ast.Node;
 import ast.nodes.RootNode;
 
@@ -9,6 +10,7 @@ public class FlowGraph {
 
     private List<Node> nodes;
     private List<List<Integer>> edges;
+    private List<Map<Integer, Boolean>> isTrueBranches;
 
     private Set<Integer> finalSet;
     private int initialNode;
@@ -17,6 +19,7 @@ public class FlowGraph {
     {
         this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
+        this.isTrueBranches = new ArrayList<>();
     }
 
     public int size(){
@@ -32,22 +35,22 @@ public class FlowGraph {
     }
 
 
-    public static FlowGraph constructGraph(Node node){
+    public static FlowGraph constructGraph(Node rootNode){
         FlowGraph graph = new FlowGraph();
 
-        for (Node n : node.blocks())
+        for (Node n : rootNode.blocks())
         {
             int label = graph.addNode(n);
             n.setLabel(label);
         }
 
-        for (int[] edgeInfo : node.flow())
+        for (Edge edgeInfo : rootNode.flow())
         {
-            graph.addEdge(edgeInfo[0], edgeInfo[1]);
+            graph.addEdge(edgeInfo.from(), edgeInfo.to(), edgeInfo.isTrueBranch());
         }
 
-        graph.initialNode = node.initialNode();
-        graph.finalSet = node.finalNodes();
+        graph.initialNode = rootNode.initialNode();
+        graph.finalSet = rootNode.finalNodes();
 
         return graph;
     }
@@ -56,57 +59,25 @@ public class FlowGraph {
     {
         this.nodes.add(node);
         this.edges.add(new ArrayList<Integer>());
+        this.isTrueBranches.add(new HashMap<>());
         return this.nodes.size() - 1;
     }
 
-    private void addEdge(int from, int to)
+    private void addEdge(int from, int to, Boolean isTrueBranch)
     {
         this.edges.get(from).add(to);
+        if (isTrueBranch != null){
+            this.isTrueBranches.get(from).put(to, isTrueBranch);
+        }
     }
 
     public List<Integer> getEdges(int vertice) {
         return Collections.unmodifiableList(this.edges.get(vertice));
     }
-/*
-    public class Edge
-    {
-        private int from, to;
 
-        public Edge(int from, int to)
-        {
-            this.from = from;
-            this.to = to;
-        }
-
-        public int getFrom() {
-            return from;
-        }
-
-        public int getTo() {
-            return to;
-        }
-
-        @Override
-        public int hashCode() {
-            return from * to;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            Edge other = (Edge)o;
-            if (other == null)
-            {
-                return false;
-            }
-
-            return this.from == other.from && this.to == other.to;
-        }
-
-        @Override
-        public String toString() {
-            return "("+this.from+","+this.to+")";
-        }
-    }*/
-
+    public Boolean isTrueBranch(int from, int to){
+        Map<Integer, Boolean> trueBranches = isTrueBranches.get(from);
+        return trueBranches.containsKey(to) ? trueBranches.get(to) : null;
+    }
 
 }

@@ -4,9 +4,9 @@ public interface Worklist {
 
     Worklist getEmpty();
 
-    void insert(Equation equation);
+    void insert(Constraint equation);
 
-    Equation extract();
+    Constraint extract();
 
     boolean isEmpty();
 }

@@ -18,4 +18,23 @@ public class BitVectorSetTest {
         assertEquals("(XYZ,"+label+")", set.toString());
     }
 
+    @Theory public void Union(@ForAll @InRange(min="0", max="61") int label1, @ForAll @InRange(min="0", max="61") int label2){
+        BitVectorSet set1 = BitVectorSet.getSetForLabel("XYZ", 0, label1);
+        BitVectorSet set2 = BitVectorSet.getSetForLabel("XYZ", 0, label2);
+
+        BitVectorSet unionSet = set1.union(set2);
+
+        assertTrue(set1.isSubsetOf(unionSet));
+        assertTrue(set2.isSubsetOf(unionSet));
+
+        if (label1 < label2) {
+            assertEquals("(XYZ," + label1 + "), (XYZ," + label2 + ")", set1.union(set2).toString());
+        }
+        else if (label1 > label2){
+            assertEquals("(XYZ," + label2 + "), (XYZ," + label1 + ")", set1.union(set2).toString());
+        }
+        else{
+            assertEquals("(XYZ," + label1 + ")", set1.union(set2).toString());
+        }
+    }
 }

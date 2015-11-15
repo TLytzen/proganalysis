@@ -6,32 +6,32 @@ import java.util.List;
 
 public class WorklistAlgorithm {
 
-    public static CompleteLattice[] solve(List<Equation> equations, int numberOfEquationVariables, Worklist worklistType, CompleteLattice latticeType){
+    public static CompleteLattice[] solve(List<Constraint> equations, int numberOfEquationVariables, Worklist worklistType, CompleteLattice latticeType){
         CompleteLattice[] analysis = new CompleteLattice[numberOfEquationVariables];
-        List<Equation>[] infl = new List[numberOfEquationVariables];
+        List<Constraint>[] infl = new List[numberOfEquationVariables];
 
         Worklist worklist = worklistType.getEmpty();
         CompleteLattice bottom = latticeType.bottom();
-        for (Equation e : equations){
+        for (Constraint e : equations){
             worklist.insert(e);
-            analysis[e.getIndex()] = bottom;
-            infl[e.getIndex()] = new ArrayList<>();
+            analysis[e.leftHandSideVariable()] = bottom;
+            infl[e.leftHandSideVariable()] = new ArrayList<>();
         }
 
-        for (Equation e : equations) {
-            List<Integer> influences = e.influences();
+        for (Constraint e : equations) {
+            List<Integer> influences = e.rightHandSideVariables();
             for (int xPrime : influences){
                 infl[xPrime].add(e);
             }
         }
 
         while (!worklist.isEmpty()){
-            Equation equation = worklist.extract();
+            Constraint equation = worklist.extract();
             CompleteLattice newLattice = equation.evaluate(analysis);
 
-            if (!newLattice.leq(analysis[equation.getIndex()])){
-                analysis[equation.getIndex()] = analysis[equation.getIndex()].join(newLattice);
-                for (Equation e : infl[equation.getIndex()]){
+            if (!newLattice.leq(analysis[equation.leftHandSideVariable()])){
+                analysis[equation.leftHandSideVariable()] = analysis[equation.leftHandSideVariable()].join(newLattice);
+                for (Constraint e : infl[equation.leftHandSideVariable()]){
                     worklist.insert(e);
                 }
             }

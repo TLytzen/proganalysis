@@ -1,8 +1,10 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -18,18 +20,13 @@ public abstract class BooleanExpression extends Node{
     }
 
     @Override
-    public List<int[]> flow() {
+    public List<Edge> flow() {
         return null;
     }
 
     @Override
     public List<Node> blocks() {
-        return null;
-    }
-
-    @Override
-    public <T, S> T accept(Visitor<T, S> visitor, S data) {
-        return visitor.visitBooleanExpression(this, data);
+        return Collections.singletonList(this);
     }
 
 

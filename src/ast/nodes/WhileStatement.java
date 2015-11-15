@@ -1,5 +1,6 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -38,15 +39,15 @@ public class WhileStatement extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
-        List<int[]> flow = new ArrayList<>();
+    public List<Edge> flow() {
+        List<Edge> flow = new ArrayList<>();
 
         flow.addAll(Node.flowForStatementList(this.nodes));
 
-        flow.add(new int[]{ this.condition.getLabel(), this.nodes.get(0).getLabel() });
+        flow.add(new Edge( this.condition.getLabel(), this.nodes.get(0).initialNode(), true));
 
         for (int lPrime : this.nodes.get(this.nodes.size() - 1).finalNodes()) {
-            flow.add(new int[]{ lPrime, this.condition.getLabel() });
+            flow.add(new Edge( lPrime, this.condition.getLabel(), null ));
         }
 
         return flow;

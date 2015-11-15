@@ -1,5 +1,6 @@
 package ast.nodes.booleanExpressions;
 
+import ast.Visitor;
 import ast.nodes.ArithmeticExpression;
 import ast.nodes.BooleanExpression;
 
@@ -35,4 +36,11 @@ public class BooleanComparisonExpression extends BooleanExpression {
     public String toString(){
         return this.left.toString()+this.operator+this.right.toString();
     }
+
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitBooleanComparisonExpression(this, data);
+    }
+
 }

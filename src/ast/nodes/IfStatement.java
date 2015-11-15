@@ -1,5 +1,6 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 import ast.nodes.BooleanExpression;
@@ -38,7 +39,7 @@ public class IfStatement extends Node {
 
     @Override
     public Integer initialNode() {
-        return this.getLabel();
+        return this.condition.getLabel();
     }
 
     @Override
@@ -59,15 +60,15 @@ public class IfStatement extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
-        List<int[]> flow = new ArrayList<>();
+    public List<Edge> flow() {
+        List<Edge> flow = new ArrayList<>();
 
         if (this.ifNodes.size() > 0) {
-            flow.add(new int[]{this.condition.getLabel(), this.ifNodes.get(0).getLabel()});
+            flow.add(new Edge(this.condition.getLabel(), this.ifNodes.get(0).getLabel(), true));
         }
 
         if (this.elseNodes.size() > 0) {
-            flow.add(new int[]{this.condition.getLabel(), this.elseNodes.get(0).getLabel()});
+            flow.add(new Edge(this.condition.getLabel(), this.elseNodes.get(0).getLabel(), false));
         }
 
         flow.addAll(Node.flowForStatementList(this.ifNodes));

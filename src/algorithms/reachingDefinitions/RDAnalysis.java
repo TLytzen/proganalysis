@@ -1,30 +1,23 @@
 package algorithms.reachingDefinitions;
 
-import algorithms.CompleteLattice;
-import algorithms.Equation;
-import algorithms.Worklist;
-import algorithms.WorklistAlgorithm;
-import algorithms.worklists.SetWorklist;
+import algorithms.*;
 import ast.Node;
-import ast.nodes.ArrayAssignment;
 import ast.nodes.ArrayDeclaration;
-import ast.nodes.IntAssignment;
 import ast.nodes.IntDeclaration;
-import ast.nodes.arithmeticExpressions.ArithmeticConstantExpression;
 import graph.FlowGraph;
 
 import java.util.*;
 
-public class RDAnalysis {
+public class RDAnalysis extends Analysis {
 
-
-    public static CompleteLattice[] analyse(FlowGraph graph, Worklist worklist)
+    @Override
+    public CompleteLattice[] analyse(FlowGraph graph, Worklist worklist)
     {
         // Map each variable name in the graph to a number
         HashMap<String, Integer> variables = getVariablesMap(graph);
 
         // Generate the constraints
-        List<Equation> equations = new ArrayList<>();
+        List<Constraint> equations = new ArrayList<>();
         RDGenSetVisitor genSetVisitor = new RDGenSetVisitor();
         RDKillSetVisitor killSetVisitor = new RDKillSetVisitor();
 

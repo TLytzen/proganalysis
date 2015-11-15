@@ -1,6 +1,7 @@
 package ast.nodes.booleanExpressions;
 
 
+import ast.Visitor;
 import ast.nodes.BooleanExpression;
 
 public class BooleanOperatorExpression extends BooleanExpression {
@@ -32,5 +33,10 @@ public class BooleanOperatorExpression extends BooleanExpression {
     @Override
     public String toString(){
         return this.left.toString()+this.operator+this.right.toString();
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitBooleanOperatorExpression(this, data);
     }
 }

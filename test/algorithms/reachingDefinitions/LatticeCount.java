@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 @GeneratorConfiguration
-@From(RDLatticeGreaterThanOrEqualToGenerator.class)
 public @interface LatticeCount {
 
     int count() default 3;

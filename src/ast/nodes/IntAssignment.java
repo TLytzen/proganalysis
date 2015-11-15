@@ -1,5 +1,6 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 
@@ -40,7 +41,7 @@ public class IntAssignment extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
+    public List<Edge> flow() {
         return Collections.emptyList();
     }
 

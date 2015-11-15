@@ -1,5 +1,6 @@
 package ast.nodes.booleanExpressions;
 
+import ast.Visitor;
 import ast.nodes.BooleanExpression;
 
 public class BooleanUnaryOperatorExpression extends BooleanExpression {
@@ -25,5 +26,10 @@ public class BooleanUnaryOperatorExpression extends BooleanExpression {
     @Override
     public String toString(){
         return this.operator+this.expression.toString();
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitBooleanUnaryOperatorExpression(this, data);
     }
 }

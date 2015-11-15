@@ -1,5 +1,6 @@
 package ast.nodes.arithmeticExpressions;
 
+import ast.Visitor;
 import ast.nodes.ArithmeticExpression;
 
 /**
@@ -21,5 +22,10 @@ public class IntExpression extends ArithmeticExpression {
     @Override
     public String toString(){
         return this.identifier;
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitIntExpression(this, data);
     }
 }

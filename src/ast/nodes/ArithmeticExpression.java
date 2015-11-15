@@ -1,6 +1,7 @@
 package ast.nodes;
 
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 
@@ -19,7 +20,7 @@ public abstract class ArithmeticExpression extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
+    public List<Edge> flow() {
         return null;
     }
 
@@ -27,11 +28,4 @@ public abstract class ArithmeticExpression extends Node {
     public List<Node> blocks() {
         return null;
     }
-
-    @Override
-    public <T, S> T accept(Visitor<T, S> visitor, S data) {
-        return visitor.visitArtihmeticExpression(this, data);
-    }
-
-
 }

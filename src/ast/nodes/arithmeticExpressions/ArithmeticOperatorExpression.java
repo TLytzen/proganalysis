@@ -1,6 +1,7 @@
 package ast.nodes.arithmeticExpressions;
 
 
+import ast.Visitor;
 import ast.nodes.ArithmeticExpression;
 
 public class ArithmeticOperatorExpression extends ArithmeticExpression {
@@ -33,5 +34,10 @@ public class ArithmeticOperatorExpression extends ArithmeticExpression {
     @Override
     public String toString(){
         return this.left+this.operator+this.right;
+    }
+
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitArithmeticOperatorExpression(this, data);
     }
 }

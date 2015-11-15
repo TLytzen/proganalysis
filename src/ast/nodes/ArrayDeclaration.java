@@ -1,5 +1,6 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 
@@ -37,7 +38,7 @@ public class ArrayDeclaration extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
+    public List<Edge> flow() {
         return Collections.emptyList();
     }
 
@@ -53,7 +54,7 @@ public class ArrayDeclaration extends Node {
 
     @Override
     public String toString(){
-        return "Int "+this.identifier+"["+this.length+"]";
+        return "int "+this.identifier+"["+this.length+"]";
     }
 
 
@@ -61,7 +62,19 @@ public class ArrayDeclaration extends Node {
         return getElementIdentifier(arrayIdentifier, "" + element);
     }
 
+    public static String getFirstElementIdentifier(String arrayIdentifier){
+        return getElementIdentifier(arrayIdentifier, "0");
+    }
+
+    public static String getRestElementIdentifier(String arrayIdentifier){
+        return getElementIdentifier(arrayIdentifier, "rest");
+    }
+
     public static String getElementIdentifier(String arrayIdentifier, String element){
         return arrayIdentifier+"["+element+"]";
+    }
+
+    public static boolean isRestElement(String identifier){
+        return identifier != null && identifier.contains("[rest]");
     }
 }

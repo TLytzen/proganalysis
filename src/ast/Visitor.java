@@ -1,6 +1,11 @@
 package ast;
 
 import ast.nodes.*;
+import ast.nodes.arithmeticExpressions.*;
+import ast.nodes.booleanExpressions.BooleanComparisonExpression;
+import ast.nodes.booleanExpressions.BooleanConstantExpression;
+import ast.nodes.booleanExpressions.BooleanOperatorExpression;
+import ast.nodes.booleanExpressions.BooleanUnaryOperatorExpression;
 
 import java.util.List;
 
@@ -45,20 +50,12 @@ public class Visitor<T, S> {
     }
 
 
-    public T visitArtihmeticExpression(ArithmeticExpression artihmeticExpression, S data) {
-        return visitChildren(artihmeticExpression, data);
-    }
-
     public T visitArrayAssignment(ArrayAssignment arrayAssignment, S data) {
         return visitChildren(arrayAssignment, data);
     }
 
     public T visitArrayDeclaration(ArrayDeclaration arrayDeclaration, S data) {
         return visitChildren(arrayDeclaration, data);
-    }
-
-    public T visitBooleanExpression(BooleanExpression booleanExpression, S data) {
-        return visitChildren(booleanExpression, data);
     }
 
     public T visitIfStatement(IfStatement ifStatement, S data) {
@@ -96,6 +93,43 @@ public class Visitor<T, S> {
     public T visitWriteStatement(WriteStatement writeStatement, S data) {
         return visitChildren(writeStatement, data);
     }
+
+    public T visitArithmeticConstantExpression(ArithmeticConstantExpression arithmeticConstantExpression, S data){
+        return visitChildren(arithmeticConstantExpression, data);
+    }
+
+    public T visitArithmeticOperatorExpression(ArithmeticOperatorExpression arithmeticOperatorExpression, S data){
+        return visitChildren(arithmeticOperatorExpression, data);
+    }
+
+    public T visitArithmeticUnaryOperatorExpression(ArithmeticUnaryOperatorExpression arithmeticUnaryOperatorExpression, S data){
+        return visitChildren(arithmeticUnaryOperatorExpression, data);
+    }
+
+    public T visitArrayExpression(ArrayExpression arrayExpression, S data){
+        return visitChildren(arrayExpression, data);
+    }
+
+    public T visitIntExpression(IntExpression intExpression, S data){
+        return visitChildren(intExpression, data);
+    }
+
+    public T visitBooleanComparisonExpression(BooleanComparisonExpression booleanComparisonExpression, S data){
+        return visitChildren(booleanComparisonExpression, data);
+    }
+
+    public T visitBooleanConstantExpression(BooleanConstantExpression booleanConstantExpression, S data){
+        return visitChildren(booleanConstantExpression, data);
+    }
+
+    public T visitBooleanOperatorExpression(BooleanOperatorExpression booleanOperatorExpression, S data){
+        return visitChildren(booleanOperatorExpression, data);
+    }
+
+    public T visitBooleanUnaryOperatorExpression(BooleanUnaryOperatorExpression booleanOperatorExpression, S data){
+        return visitChildren(booleanOperatorExpression, data);
+    }
+
 
     /**
      * Aggregates the results from the children.

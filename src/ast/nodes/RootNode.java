@@ -1,5 +1,6 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 
@@ -11,6 +12,11 @@ import java.util.Set;
 public class RootNode extends Node {
 
     public RootNode(List<Node> nodes) {
+
+        // Guarantee isolated exits - and ensure that the entry to the last statement is actually the output of the analysis
+        if (!(nodes.get(nodes.size() - 1) instanceof  SkipStatement)){
+            nodes.add(new SkipStatement());
+        }
 
         this.addChildNodes(nodes);
     }
@@ -34,7 +40,7 @@ public class RootNode extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
+    public List<Edge> flow() {
         return Node.flowForStatementList(this.children);
     }
 

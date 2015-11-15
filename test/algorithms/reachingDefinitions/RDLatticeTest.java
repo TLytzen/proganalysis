@@ -19,7 +19,8 @@ public class RDLatticeTest {
         assertTrue(lattice.leq(lattice));
     }
 
-    @Theory public void testTransitivity(@ForAll   @LatticeCount(count=3)  RDLattice[] lattices)
+    @Theory public void testTransitivity(@ForAll  @From(RDLatticeGreaterThanOrEqualToGenerator.class) @LatticeCount(count=3)
+                                         RDLattice[] lattices)
     {
         RDLattice a = lattices[0];
         RDLattice b = lattices[1];
@@ -35,7 +36,7 @@ public class RDLatticeTest {
             //TODO
     }
 
-    @Theory public void testInvariance(@ForAll  @LatticeCount(count=2)  RDLattice[] lattices) {
+    @Theory public void testInvariance(@ForAll @From(RDLatticeGreaterThanOrEqualToGenerator.class)  @LatticeCount(count=2)  RDLattice[] lattices) {
         RDLattice s = lattices[0];
         RDLattice sPrime = lattices[1];
         RDLattice sDoublePrime = new RDLattice(sPrime);

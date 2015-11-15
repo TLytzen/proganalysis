@@ -1,5 +1,6 @@
 package ast.nodes;
 
+import ast.Edge;
 import ast.Node;
 import ast.Visitor;
 
@@ -31,7 +32,7 @@ public class WriteStatement extends Node {
     }
 
     @Override
-    public List<int[]> flow() {
+    public List<Edge> flow() {
         return Collections.emptyList();
     }
 

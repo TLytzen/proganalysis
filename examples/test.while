@@ -1,15 +1,20 @@
 program
-int A[2];
-int x;
 
-read A[0];
-read A[1];
+int a;
+int b;
+int result;
 
-while x < 2 do
-    write A[x];
-    x := x + 1 + 1;
-od
+read a;
+read b;
 
-skip;
+if a > 0 & b > 0 then
+    result := 1;
+    while b > 0 do
+        result := result * a;
+        b := b - 1;
+    od
+else
+    write 1;
+fi
 
 end

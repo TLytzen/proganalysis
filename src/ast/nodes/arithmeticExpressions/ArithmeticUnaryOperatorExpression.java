@@ -1,6 +1,7 @@
 package ast.nodes.arithmeticExpressions;
 
 
+import ast.Visitor;
 import ast.nodes.ArithmeticExpression;
 
 public class ArithmeticUnaryOperatorExpression extends ArithmeticExpression {
@@ -29,4 +30,8 @@ public class ArithmeticUnaryOperatorExpression extends ArithmeticExpression {
         return this.operator + this.expression;
     }
 
+    @Override
+    public <T, S> T accept(Visitor<T, S> visitor, S data) {
+        return visitor.visitArithmeticUnaryOperatorExpression(this, data);
+    }
 }

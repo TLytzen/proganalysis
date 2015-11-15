@@ -2,13 +2,12 @@ package algorithms.reachingDefinitions;
 
 
 import algorithms.CompleteLattice;
-import algorithms.Equation;
+import algorithms.Constraint;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
+public class BitVectorFrameworkConstraint implements Constraint<RDLattice> {
 
     private int leftHandSideVariable;
     private Integer rightHandSideVariable;
@@ -48,12 +47,12 @@ public class BitVectorFrameworkConstraint implements Equation<RDLattice> {
     }
 
     @Override
-    public int getIndex() {
+    public int leftHandSideVariable() {
         return this.leftHandSideVariable;
     }
 
     @Override
-    public List<Integer> influences() {
+    public List<Integer> rightHandSideVariables() {
         if (this.rightHandSideVariable != null){
             return Collections.singletonList(this.rightHandSideVariable);
         }

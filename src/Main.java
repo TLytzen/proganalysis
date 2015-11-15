@@ -1,6 +1,9 @@
 
 
+import algorithms.Analysis;
 import algorithms.CompleteLattice;
+import algorithms.Worklist;
+import algorithms.detectionOfSigns.DSAnalysis;
 import algorithms.reachingDefinitions.RDAnalysis;
 import algorithms.worklists.SetWorklist;
 import antlr.TheLangLexer;
@@ -19,14 +22,16 @@ public class Main {
 
     public static void main(String args[]) throws Exception {
 
+        Input input = Input.parseInput(args);
+
         // Read Program and convert to AST
-        Node rootNode = readProgram(args[0]);
+        Node rootNode = readProgram(input.getProgramFileName());
 
         // Construct Flow Graph
         FlowGraph graph = FlowGraph.constructGraph(rootNode);
 
         // Run the reaching definitions analysis
-        CompleteLattice[] rdAnalysis = RDAnalysis.analyse(graph, new SetWorklist());
+        CompleteLattice[] rdAnalysis = input.getAnalysis().analyse(graph, input.getWorklist());
 
         // Print the result
         Printer print = new Printer();
@@ -53,4 +58,5 @@ public class Main {
 
         return rootNode;
     }
+
 }
