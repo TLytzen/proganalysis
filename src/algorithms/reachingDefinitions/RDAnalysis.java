@@ -11,7 +11,7 @@ import java.util.*;
 public class RDAnalysis extends Analysis {
 
     @Override
-    public CompleteLattice[] analyse(FlowGraph graph, Worklist worklist)
+    public CompleteLattice[] analyse(FlowGraph graph, Worklist worklist, boolean measureTime)
     {
         // Map each variable name in the graph to a number
         HashMap<String, Integer> variables = getVariablesMap(graph);
@@ -56,7 +56,7 @@ public class RDAnalysis extends Analysis {
         }
 
         // Solve the constraints using the worklist algorithm
-        return WorklistAlgorithm.solve(equations, graph.size(), worklist, new RDLattice(variables));
+        return WorklistAlgorithm.solve(equations, graph.size(), worklist, new RDLattice(variables), measureTime);
     }
 
     private static HashMap<String, Integer> getVariablesMap(FlowGraph graph) {

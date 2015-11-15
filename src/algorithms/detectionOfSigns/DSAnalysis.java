@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DSAnalysis extends Analysis {
     @Override
-    public CompleteLattice[] analyse(FlowGraph graph, Worklist worklist) {
+    public CompleteLattice[] analyse(FlowGraph graph, Worklist worklist, boolean measureTime) {
         // Map each variable name in the graph to a number
         HashMap<String, Integer> variables = getVariablesMap(graph);
 
@@ -44,7 +44,7 @@ public class DSAnalysis extends Analysis {
         }
 
         // Solve the constraints using the worklist algorithm
-        return WorklistAlgorithm.solve(equations, graph.size(), worklist, new DSLattice(variables));
+        return WorklistAlgorithm.solve(equations, graph.size(), worklist, new DSLattice(variables), measureTime);
     }
 
     private static HashMap<String, Integer> getVariablesMap(FlowGraph graph) {

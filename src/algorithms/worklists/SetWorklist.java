@@ -4,6 +4,7 @@ import algorithms.Constraint;
 import algorithms.Worklist;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class SetWorklist implements Worklist {
 
@@ -12,7 +13,7 @@ public class SetWorklist implements Worklist {
     private HashSet<Constraint> equations = new HashSet<>();
 
     @Override
-    public Worklist getEmpty() {
+    public Worklist getEmpty(List<Constraint> constraints) {
         return EmptySet;
     }
 

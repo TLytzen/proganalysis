@@ -38,7 +38,7 @@ public class AbstractStateSpaceConstraint implements Constraint<DSLattice> {
         }
 
         if (this.updateFunction != null) {
-            lattice = this.updateFunction.update(lattice, this.isTrueBranch);
+            lattice = this.updateFunction.update(lattice, this.isTrueBranch != null ? this.isTrueBranch : false);
         }
 
         return lattice;

@@ -1,8 +1,10 @@
 package algorithms;
 
+import java.util.List;
+
 public interface Worklist {
 
-    Worklist getEmpty();
+    Worklist getEmpty(List<Constraint> equations);
 
     void insert(Constraint equation);
 

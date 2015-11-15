@@ -31,7 +31,7 @@ public class Main {
         FlowGraph graph = FlowGraph.constructGraph(rootNode);
 
         // Run the reaching definitions analysis
-        CompleteLattice[] rdAnalysis = input.getAnalysis().analyse(graph, input.getWorklist());
+        CompleteLattice[] rdAnalysis = input.getAnalysis().analyse(graph, input.getWorklist(graph), input.measureTime());
 
         // Print the result
         Printer print = new Printer();
