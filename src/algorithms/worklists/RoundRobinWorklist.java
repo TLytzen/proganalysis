@@ -14,7 +14,7 @@ import java.util.Map;
 public class RoundRobinWorklist  implements Worklist {
 
     private List<Integer> reversePostOrderSorting;
-    private Map<Integer, Constraint> constraints;
+    private Map<Integer, List<Constraint>> constraints;
     private boolean changed;
     private List<Constraint> current = new ArrayList<>();
     private List<Constraint> sorted = new ArrayList<>();
@@ -29,7 +29,7 @@ public class RoundRobinWorklist  implements Worklist {
         }
     }
 
-    private RoundRobinWorklist(List<Integer> reversePostOrderSorting, Map<Integer, Constraint> constraints, List<Constraint> sorted){
+    private RoundRobinWorklist(List<Integer> reversePostOrderSorting, Map<Integer, List<Constraint>> constraints, List<Constraint> sorted){
         this.reversePostOrderSorting = reversePostOrderSorting;
         this.constraints = constraints;
         this.sorted = sorted;
@@ -40,12 +40,21 @@ public class RoundRobinWorklist  implements Worklist {
     public Worklist getEmpty(List<Constraint> constraints) {
         if (this.constraints.size() != this.reversePostOrderSorting.size()){
             for (Constraint constraint : constraints) {
-                this.constraints.put(constraint.leftHandSideVariable(), constraint);
+                List<Constraint> contraintsForLabels;
+                if (!this.constraints.containsKey(constraint.leftHandSideVariable())) {
+                    contraintsForLabels = new ArrayList<>();
+                    this.constraints.put(constraint.leftHandSideVariable(), contraintsForLabels);
+                }
+                else{
+                    contraintsForLabels = this.constraints.get(constraint.leftHandSideVariable());
+                }
+
+                contraintsForLabels.add(constraint);
             }
 
             if (this.constraints.size() == this.reversePostOrderSorting.size()){
                 for (int label : this.reversePostOrderSorting){
-                    this.sorted.add(this.constraints.get(label));
+                    this.sorted.addAll(this.constraints.get(label));
                 }
             }
         }
