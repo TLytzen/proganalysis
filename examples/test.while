@@ -1,31 +1,12 @@
 program
+
 int A[2];
-int x;
+int B[2];
 
-read A[0];
-read A[1];
-
-while x < 2 do
-    write A[x];
-    x := x + 1 + 1;
-    while x < 2 do
-        write A[x];
-        x := x + 1 + 1;
-        while x < 2 do
-            write A[x];
-            x := x + 1 + 1;
-        od
-        while x < 2 do
-            write A[x];
-            x := x + 1 + 1;
-        od
-        while x < 2 do
-            write A[x];
-            x := x + 1 + 1;
-        od
-    od
-
-od
+A[0] := 1;
+B[A[0]] := -3;
+A[1] := 0;
+B[A[1]] := -2;
 
 skip;
 

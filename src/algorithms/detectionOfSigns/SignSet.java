@@ -113,7 +113,7 @@ public class SignSet implements Set<SignSet>{
      * @return the union of the two @see SignSet
      */
     public SignSet union(SignSet other) {
-        if (this.variable != other.variable && other.variableName != null) {
+        if (this.variable != other.variable && this.variableName != null && other.variableName != null) {
             throw new IllegalArgumentException("SignSet is for a different variable");
         }
 

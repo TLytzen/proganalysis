@@ -1,0 +1,26 @@
+program
+int x;
+int y;
+int z;
+
+while x < 10 do
+    z := 0;
+    y := 10;
+
+    while y >= 0 do
+        z := y;
+        while z >= 0 do
+            if x < 0 then
+                x := z * y;
+            else
+                x := x -1;
+            fi;
+            z := z - 1;
+        od;
+        y := -1;
+    od
+od
+
+skip;
+
+end
